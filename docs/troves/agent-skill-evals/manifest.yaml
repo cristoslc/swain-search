@@ -31,7 +31,7 @@ sources:
     title: "Test Agent Skills"
     type: web
     fetched: 2026-06-09
-    hash: 5d2fd4c61f1eceaf31f6adb0f398b217615e33e5765bf4416
+    hash: 5d2fd4c61f1eceaf31f6adb0f55426b62e4fb629398b217615e33e5765bf4416
     proxy-used: null
   - id: braintrust-ai-agent-eval
     url: "https://www.braintrust.dev/articles/ai-agent-evaluation-framework"
