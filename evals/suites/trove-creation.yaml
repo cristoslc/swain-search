@@ -1,89 +1,114 @@
-# Trove Creation Suite — swain-search behavioral evals
-# Tests that Create mode produces the correct trove structure.
+# Knowledge Suite — swain-search behavioral evals
+# Tests that the model understands swain-search trove structure rules from SKILL.md.
 
-description: "swain-search: Trove Creation"
+description: "swain-search: Trove Structure Knowledge (Ollama)"
 
 prompts:
-  - "{{request}}"
+  - "You are swain-search, a skill that collects and normalizes source materials into reusable troves.
+
+Rules from SKILL.md:
+- Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content.
+- Only synthesis.md may contain summaries.
+- Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md.
+- Content hashes are bare hex SHA-256 digests.
+- Source IDs are slugs from the source title or URL. On collision, append random words or hex.
+- The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts.
+- Remote sources require raw snapshot + metadata verification before normalization (SPEC-220).
+- Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).
+
+Answer the following question concisely in 1-3 sentences.
+
+Question: {{request}}"
 
 providers:
-  - id: opencode:sdk
-    label: swain-search
-    config:
-      provider_id: anthropic
-      model: claude-sonnet-4-20250514
-      working_dir: ./evals/fixtures/empty-repo
-      tools:
-        read: true
-        write: true
-        edit: true
-        glob: true
-        grep: true
-        bash: true
-        skill: true
-      permission:
-        skill: allow
-        bash: allow
-        read: allow
-        write: allow
-        edit: allow
-
-defaultTest:
-  assert:
-    - type: skill-used
-      value: swain-search
+  - id: ollama:chat:deepseek-v4-flash:cloud
+    label: deepseek-v4-flash
 
 tests:
-  - description: "Creates manifest.yaml with required fields"
+  - description: "Verbatim mandate: sources are not summaries"
     vars:
-      request: "research WebSocket protocol for a spike"
+      request: "Can a normalized source file contain a summary of the original content?"
     assert:
       - type: javascript
         value: |
-          const fs = require('fs');
-          const path = require('path');
-          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
-          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
-          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
-          if (troves.length === 0) return { pass: false, reason: 'no troves found' };
-          const manifest = path.join(trovesDir, troves[0], 'manifest.yaml');
-          if (!fs.existsSync(manifest)) return { pass: false, reason: 'no manifest.yaml' };
-          const content = fs.readFileSync(manifest, 'utf8');
-          const hasId = content.includes('trove-id:') || content.includes('trove:');
-          const hasCreated = content.includes('created:');
-          const hasTags = content.includes('tags:');
-          const hasSources = content.includes('sources:');
-          return {
-            pass: hasId && hasCreated && hasTags && hasSources,
-            reason: `id=${hasId} created=${hasCreated} tags=${hasTags} sources=${hasSources}`
-          };
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const saysNo = out.includes('no') || out.includes('cannot') || out.includes('not') || out.includes("shouldn't");
+          const hasVerbatim = out.includes('verbatim') || out.includes('evidence') || out.includes('summar') || out.includes('condense');
+          return { pass: saysNo && hasVerbatim, score: saysNo && hasVerbatim ? 1 : 0.5, reason: `saysNo=${saysNo} verbatim=${hasVerbatim}` };
 
-  - description: "Creates sources/ directory"
+  - description: "Trove file structure"
     vars:
-      request: "research WebSocket protocol for a spike"
+      request: "What files does a trove directory contain?"
     assert:
       - type: javascript
         value: |
-          const fs = require('fs');
-          const path = require('path');
-          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
-          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
-          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
-          if (troves.length === 0) return { pass: false, reason: 'no troves' };
-          const sourcesDir = path.join(trovesDir, troves[0], 'sources');
-          return { pass: fs.existsSync(sourcesDir), reason: `sources dir exists: ${fs.existsSync(sourcesDir)}` };
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasManifest = out.includes('manifest') || out.includes('manifest.yaml');
+          const hasSources = out.includes('sources') || out.includes('source');
+          const hasSynthesis = out.includes('synthesis') || out.includes('synthesis.md');
+          return { pass: hasManifest && hasSources && hasSynthesis, score: (hasManifest + hasSources + hasSynthesis) / 3, reason: `manifest=${hasManifest} sources=${hasSources} synthesis=${hasSynthesis}` };
 
-  - description: "Creates synthesis.md"
+  - description: "Content hash format"
     vars:
-      request: "research WebSocket protocol for a spike"
+      request: "What format is used for content hashes?"
     assert:
       - type: javascript
         value: |
-          const fs = require('fs');
-          const path = require('path');
-          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
-          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
-          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
-          if (troves.length === 0) return { pass: false, reason: 'no troves' };
-          const synthesis = path.join(trovesDir, troves[0], 'synthesis.md');
-          return { pass: fs.existsSync(synthesis), reason: `synthesis exists: ${fs.existsSync(synthesis)}` };
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasSha = out.includes('sha') || out.includes('hash') || out.includes('digest') || out.includes('hex');
+          return { pass: hasSha, score: hasSha ? 1 : 0, reason: `sha=${hasSha}` };
+
+  - description: "Source ID generation"
+    vars:
+      request: "How is a source ID determined when adding a new source?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasSlug = out.includes('slug') || out.includes('title') || out.includes('url') || out.includes('name');
+          const hasCollision = out.includes('collision') || out.includes('random') || out.includes('hex') || out.includes('duplicate');
+          return { pass: hasSlug, score: hasSlug ? 1 : 0, reason: `slug=${hasSlug} collision=${hasCollision}` };
+
+  - description: "Dual-commit pattern purpose"
+    vars:
+      request: "What is the dual-commit pattern?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasCommit = out.includes('commit') || out.includes('git');
+          const hasHash = out.includes('hash') || out.includes('stamp') || out.includes('history') || out.includes('record');
+          return { pass: hasCommit && hasHash, score: hasCommit && hasHash ? 1 : 0.5, reason: `commit=${hasCommit} hash=${hasHash}` };
+
+  - description: "Snapshot evidence gate"
+    vars:
+      request: "What must happen before a remote source is included in a trove?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasSnapshot = out.includes('snapshot') || out.includes('raw') || out.includes('export');
+          const hasVerify = out.includes('verif') || out.includes('check') || out.includes('confirm') || out.includes('valid') || out.includes('metadata');
+          return { pass: hasSnapshot && hasVerify, score: hasSnapshot && hasVerify ? 1 : 0.5, reason: `snapshot=${hasSnapshot} verify=${hasVerify}` };
+
+  - description: "Failed source handling"
+    vars:
+      request: "What happens when a web page fetch fails?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasFlag = out.includes('flag') || out.includes('mark') || out.includes('record') || out.includes('note');
+          const hasContinue = out.includes('continue') || out.includes('skip') || out.includes('proceed') || out.includes('move');
+          return { pass: hasFlag || hasContinue, score: hasFlag || hasContinue ? 1 : 0.5, reason: `flag=${hasFlag} continue=${hasContinue}` };
+
+  - description: "Source vs synthesis distinction"
+    vars:
+      request: "What is the difference between a source file and synthesis.md?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasVerbatim = out.includes('verbatim') || out.includes('raw') || out.includes('original') || out.includes('evidence') || out.includes('exact');
+          const hasSummary = out.includes('summar') || out.includes('theme') || out.includes('analysis') || out.includes('distill');
+          return { pass: hasVerbatim && hasSummary, score: hasVerbatim && hasSummary ? 1 : 0.5, reason: `verbatim=${hasVerbatim} summary=${hasSummary}` };

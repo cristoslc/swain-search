@@ -1,0 +1,812 @@
+{
+  "evalId": "eval-fN2-2026-06-09T14:52:21",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-06-09T14:52:21.634Z",
+    "prompts": [
+      {
+        "id": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+        "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+        "provider": "deepseek-v4-flash",
+        "metrics": {
+          "score": 6,
+          "testPassCount": 6,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 6,
+          "assertFailCount": 0,
+          "totalLatencyMs": 10400,
+          "tokenUsage": {
+            "prompt": 1017,
+            "completion": 584,
+            "cached": 0,
+            "total": 1601,
+            "numRequests": 6,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "before=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasBefore = out.includes('before') || out.includes('prior') || out.includes('first') || out.includes('creat');\nreturn { pass: hasBefore, score: hasBefore ? 1 : 0, reason: `before=${hasBefore}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "1c5353e6-f1e6-4849-9c5f-991504d78236",
+        "latencyMs": 1886,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: When should existing troves be searched?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Existing troves should be searched at the start of every prior art check (before creating new troves) and again after fetching a source, when extracted topic keywords are compared against existing troves.",
+          "tokenUsage": {
+            "prompt": 166,
+            "completion": 124,
+            "total": 290
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Prior art check happens before creation",
+          "vars": {
+            "request": "When should existing troves be searched?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasBefore = out.includes('before') || out.includes('prior') || out.includes('first') || out.includes('creat');\nreturn { pass: hasBefore, score: hasBefore ? 1 : 0, reason: `before=${hasBefore}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 166,
+          "completion": 124,
+          "cached": 0,
+          "total": 290,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "When should existing troves be searched?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "search=false keyword=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSearch = out.includes('search') || out.includes('grep') || out.includes('scan') || out.includes('look');\nconst hasKeyword = out.includes('keyword') || out.includes('match') || out.includes('literal') || out.includes('term');\nreturn { pass: hasSearch || hasKeyword, score: hasSearch || hasKeyword ? 1 : 0.5, reason: `search=${hasSearch} keyword=${hasKeyword}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "cd79ec44-096f-4e3e-bd5f-218106511b42",
+        "latencyMs": 1580,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: How does Phase 1 of the prior art check work?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Phase 1 of the prior art check performs a literal keyword match across trove manifests, source content, and syntheses to identify any existing troves.",
+          "tokenUsage": {
+            "prompt": 170,
+            "completion": 79,
+            "total": 249
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Phase 1 keyword match method",
+          "vars": {
+            "request": "How does Phase 1 of the prior art check work?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSearch = out.includes('search') || out.includes('grep') || out.includes('scan') || out.includes('look');\nconst hasKeyword = out.includes('keyword') || out.includes('match') || out.includes('literal') || out.includes('term');\nreturn { pass: hasSearch || hasKeyword, score: hasSearch || hasKeyword ? 1 : 0.5, reason: `search=${hasSearch} keyword=${hasKeyword}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 170,
+          "completion": 79,
+          "cached": 0,
+          "total": 249,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "How does Phase 1 of the prior art check work?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "after=true content=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasAfter = out.includes('after') || out.includes('once') || out.includes('when') || out.includes('fetch');\nconst hasContent = out.includes('content') || out.includes('source') || out.includes('fetch');\nreturn { pass: hasAfter || hasContent, score: hasAfter || hasContent ? 1 : 0.5, reason: `after=${hasAfter} content=${hasContent}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "2ec58b8a-7b36-401d-ba03-2edd742c7708",
+        "latencyMs": 1734,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: When are topic keywords extracted?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Topic keywords are extracted after fetching a source, during Phase 2 of the prior art check process.",
+          "tokenUsage": {
+            "prompt": 164,
+            "completion": 80,
+            "total": 244
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Topic keyword timing",
+          "vars": {
+            "request": "When are topic keywords extracted?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasAfter = out.includes('after') || out.includes('once') || out.includes('when') || out.includes('fetch');\nconst hasContent = out.includes('content') || out.includes('source') || out.includes('fetch');\nreturn { pass: hasAfter || hasContent, score: hasAfter || hasContent ? 1 : 0.5, reason: `after=${hasAfter} content=${hasContent}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 164,
+          "completion": 80,
+          "cached": 0,
+          "total": 244,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "When are topic keywords extracted?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "match=true extend=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasMatch = out.includes('match') || out.includes('keyword') || out.includes('overlap') || out.includes('relat');\nconst hasExtend = out.includes('extend') || out.includes('exist');\nreturn { pass: hasMatch, score: hasMatch ? 1 : 0, reason: `match=${hasMatch} extend=${hasExtend}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "b9990a92-4a82-4a7f-a3ab-971dc74b2c32",
+        "latencyMs": 1768,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: When should you extend an existing trove instead of creating a new one?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Extend an existing trove when a prior art check reveals any trove that matches on two or more topic keywords extracted from the source content.",
+          "tokenUsage": {
+            "prompt": 173,
+            "completion": 108,
+            "total": 281
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Extend vs Create decision",
+          "vars": {
+            "request": "When should you extend an existing trove instead of creating a new one?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasMatch = out.includes('match') || out.includes('keyword') || out.includes('overlap') || out.includes('relat');\nconst hasExtend = out.includes('extend') || out.includes('exist');\nreturn { pass: hasMatch, score: hasMatch ? 1 : 0, reason: `match=${hasMatch} extend=${hasExtend}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 173,
+          "completion": 108,
+          "cached": 0,
+          "total": 281,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "When should you extend an existing trove instead of creating a new one?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "crosslink=true new=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasCrossLink = out.includes('cross-link') || out.includes('link') || out.includes('refer') || out.includes('mention');\nconst hasNew = out.includes('new') || out.includes('create') || out.includes('separate') || out.includes('distinct');\nreturn { pass: hasCrossLink || hasNew, score: hasCrossLink || hasNew ? 1 : 0.5, reason: `crosslink=${hasCrossLink} new=${hasNew}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "c4cec812-3089-4570-a8ed-649aa016f204",
+        "latencyMs": 1424,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What do you do if topic is related but distinct from an existing trove?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "If the topic is related but distinct from an existing trove, you create a new trove and cross-link it in the synthesis.md file.",
+          "tokenUsage": {
+            "prompt": 174,
+            "completion": 92,
+            "total": 266
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Adjacent topic handling",
+          "vars": {
+            "request": "What do you do if topic is related but distinct from an existing trove?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasCrossLink = out.includes('cross-link') || out.includes('link') || out.includes('refer') || out.includes('mention');\nconst hasNew = out.includes('new') || out.includes('create') || out.includes('separate') || out.includes('distinct');\nreturn { pass: hasCrossLink || hasNew, score: hasCrossLink || hasNew ? 1 : 0.5, reason: `crosslink=${hasCrossLink} new=${hasNew}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 174,
+          "completion": 92,
+          "cached": 0,
+          "total": 266,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What do you do if topic is related but distinct from an existing trove?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "prior=true decision=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasPrior = out.includes('prior') || out.includes('finding') || out.includes('match') || out.includes('result');\nconst hasDecision = out.includes('decid') || out.includes('rout') || out.includes('reason') || out.includes('report');\nreturn { pass: hasPrior, score: hasPrior ? 1 : 0, reason: `prior=${hasPrior} decision=${hasDecision}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "7ecb8c99-3491-40b8-942b-a92825a308bd",
+        "latencyMs": 2008,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What should be reported before creating or extending a trove?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "1c025eba210176aecb008252c67276a07505d56f117c3761fbc2b9bf84d9de91",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Before creating or extending a trove, you must report prior art findings (from keyword matching and topic extraction) along with a routing decision indicating whether to create a new trove, extend an existing one, or cross-link.",
+          "tokenUsage": {
+            "prompt": 170,
+            "completion": 101,
+            "total": 271
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Decision gate output",
+          "vars": {
+            "request": "What should be reported before creating or extending a trove?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasPrior = out.includes('prior') || out.includes('finding') || out.includes('match') || out.includes('result');\nconst hasDecision = out.includes('decid') || out.includes('rout') || out.includes('reason') || out.includes('report');\nreturn { pass: hasPrior, score: hasPrior ? 1 : 0, reason: `prior=${hasPrior} decision=${hasDecision}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "tokenUsage": {
+          "prompt": 170,
+          "completion": 101,
+          "cached": 0,
+          "total": 271,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What should be reported before creating or extending a trove?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 6,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 1017,
+        "completion": 584,
+        "cached": 0,
+        "total": 1601,
+        "numRequests": 6,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 3765,
+      "evaluationDurationMs": 3765
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "swain-search: Prior Art Knowledge (Ollama)",
+    "prompts": [
+      "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules on prior art checks: - Always scan existing troves before creating new ones. - Phase 1: Literal keyword match — search trove manifests, source content, and syntheses. - Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves. - Decision gate: Output a routing decision with prior art findings before proceeding. - If any trove matches on 2+ topic keywords, default to Extend mode. - If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}"
+    ],
+    "providers": [
+      {
+        "id": "ollama:chat:deepseek-v4-flash:cloud",
+        "label": "deepseek-v4-flash"
+      }
+    ],
+    "tests": [
+      {
+        "description": "Prior art check happens before creation",
+        "vars": {
+          "request": "When should existing troves be searched?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasBefore = out.includes('before') || out.includes('prior') || out.includes('first') || out.includes('creat');\nreturn { pass: hasBefore, score: hasBefore ? 1 : 0, reason: `before=${hasBefore}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Phase 1 keyword match method",
+        "vars": {
+          "request": "How does Phase 1 of the prior art check work?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSearch = out.includes('search') || out.includes('grep') || out.includes('scan') || out.includes('look');\nconst hasKeyword = out.includes('keyword') || out.includes('match') || out.includes('literal') || out.includes('term');\nreturn { pass: hasSearch || hasKeyword, score: hasSearch || hasKeyword ? 1 : 0.5, reason: `search=${hasSearch} keyword=${hasKeyword}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Topic keyword timing",
+        "vars": {
+          "request": "When are topic keywords extracted?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasAfter = out.includes('after') || out.includes('once') || out.includes('when') || out.includes('fetch');\nconst hasContent = out.includes('content') || out.includes('source') || out.includes('fetch');\nreturn { pass: hasAfter || hasContent, score: hasAfter || hasContent ? 1 : 0.5, reason: `after=${hasAfter} content=${hasContent}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Extend vs Create decision",
+        "vars": {
+          "request": "When should you extend an existing trove instead of creating a new one?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasMatch = out.includes('match') || out.includes('keyword') || out.includes('overlap') || out.includes('relat');\nconst hasExtend = out.includes('extend') || out.includes('exist');\nreturn { pass: hasMatch, score: hasMatch ? 1 : 0, reason: `match=${hasMatch} extend=${hasExtend}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Adjacent topic handling",
+        "vars": {
+          "request": "What do you do if topic is related but distinct from an existing trove?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasCrossLink = out.includes('cross-link') || out.includes('link') || out.includes('refer') || out.includes('mention');\nconst hasNew = out.includes('new') || out.includes('create') || out.includes('separate') || out.includes('distinct');\nreturn { pass: hasCrossLink || hasNew, score: hasCrossLink || hasNew ? 1 : 0.5, reason: `crosslink=${hasCrossLink} new=${hasNew}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Decision gate output",
+        "vars": {
+          "request": "What should be reported before creating or extending a trove?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasPrior = out.includes('prior') || out.includes('finding') || out.includes('match') || out.includes('result');\nconst hasDecision = out.includes('decid') || out.includes('rout') || out.includes('reason') || out.includes('report');\nreturn { pass: hasPrior, score: hasPrior ? 1 : 0, reason: `prior=${hasPrior} decision=${hasDecision}` };\n"
+          }
+        ]
+      }
+    ],
+    "env": {},
+    "outputPath": [
+      "evals/artifacts/prior-art.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.15",
+    "nodeVersion": "v24.14.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-06-09T14:52:25.433Z",
+    "evaluationCreatedAt": "2026-06-09T14:52:21.634Z"
+  },
+  "vars": [
+    "request"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "showProgressBar": true,
+    "repeat": 1,
+    "maxConcurrency": 4,
+    "cache": false
+  }
+}

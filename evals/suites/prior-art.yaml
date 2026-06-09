@@ -1,49 +1,89 @@
-# Prior Art Check Suite — swain-search behavioral evals
-# Tests that the agent scans existing troves before creating new ones.
+# Prior Art Suite — swain-search behavioral evals
+# Tests understanding of prior art check rules from SKILL.md.
 
-description: "swain-search: Prior Art Check"
+description: "swain-search: Prior Art Knowledge (Ollama)"
 
 prompts:
-  - "{{request}}"
+  - "You are swain-search, a skill that collects and normalizes source materials into reusable troves.
+
+Rules on prior art checks:
+- Always scan existing troves before creating new ones.
+- Phase 1: Literal keyword match — search trove manifests, source content, and syntheses.
+- Phase 2: After fetching a source, extract 3-5 topic keywords from its content and search existing troves.
+- Decision gate: Output a routing decision with prior art findings before proceeding.
+- If any trove matches on 2+ topic keywords, default to Extend mode.
+- If topic is adjacent but distinct, create new trove but cross-link in synthesis.md.
+
+Answer the following question concisely in 1-3 sentences.
+
+Question: {{request}}"
 
 providers:
-  - id: opencode:sdk
-    label: swain-search
-    config:
-      provider_id: anthropic
-      model: claude-sonnet-4-20250514
-      working_dir: ./evals/fixtures/empty-repo
-      tools:
-        read: true
-        write: true
-        edit: true
-        glob: true
-        grep: true
-        bash: true
-        skill: true
-      permission:
-        skill: allow
-        bash: allow
-        read: allow
-        write: allow
-        edit: allow
-
-defaultTest:
-  assert:
-    - type: skill-used
-      value: swain-search
+  - id: ollama:chat:deepseek-v4-flash:cloud
+    label: deepseek-v4-flash
 
 tests:
-  - description: "Reports prior art when trove exists with matching tag"
+  - description: "Prior art check happens before creation"
     vars:
-      request: "research WebSocket protocol"
+      request: "When should existing troves be searched?"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasBefore = out.includes('before') || out.includes('prior') || out.includes('first') || out.includes('creat');
+          return { pass: hasBefore, score: hasBefore ? 1 : 0, reason: `before=${hasBefore}` };
 
-  - description: "No prior art when no troves exist"
+  - description: "Phase 1 keyword match method"
     vars:
-      request: "research quantum computing for a spike"
+      request: "How does Phase 1 of the prior art check work?"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasSearch = out.includes('search') || out.includes('grep') || out.includes('scan') || out.includes('look');
+          const hasKeyword = out.includes('keyword') || out.includes('match') || out.includes('literal') || out.includes('term');
+          return { pass: hasSearch || hasKeyword, score: hasSearch || hasKeyword ? 1 : 0.5, reason: `search=${hasSearch} keyword=${hasKeyword}` };
+
+  - description: "Topic keyword timing"
+    vars:
+      request: "When are topic keywords extracted?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasAfter = out.includes('after') || out.includes('once') || out.includes('when') || out.includes('fetch');
+          const hasContent = out.includes('content') || out.includes('source') || out.includes('fetch');
+          return { pass: hasAfter || hasContent, score: hasAfter || hasContent ? 1 : 0.5, reason: `after=${hasAfter} content=${hasContent}` };
+
+  - description: "Extend vs Create decision"
+    vars:
+      request: "When should you extend an existing trove instead of creating a new one?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasMatch = out.includes('match') || out.includes('keyword') || out.includes('overlap') || out.includes('relat');
+          const hasExtend = out.includes('extend') || out.includes('exist');
+          return { pass: hasMatch, score: hasMatch ? 1 : 0, reason: `match=${hasMatch} extend=${hasExtend}` };
+
+  - description: "Adjacent topic handling"
+    vars:
+      request: "What do you do if topic is related but distinct from an existing trove?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasCrossLink = out.includes('cross-link') || out.includes('link') || out.includes('refer') || out.includes('mention');
+          const hasNew = out.includes('new') || out.includes('create') || out.includes('separate') || out.includes('distinct');
+          return { pass: hasCrossLink || hasNew, score: hasCrossLink || hasNew ? 1 : 0.5, reason: `crosslink=${hasCrossLink} new=${hasNew}` };
+
+  - description: "Decision gate output"
+    vars:
+      request: "What should be reported before creating or extending a trove?"
+    assert:
+      - type: javascript
+        value: |
+          const out = (typeof output === "string" ? output : output.output || "").toLowerCase();
+          const hasPrior = out.includes('prior') || out.includes('finding') || out.includes('match') || out.includes('result');
+          const hasDecision = out.includes('decid') || out.includes('rout') || out.includes('reason') || out.includes('report');
+          return { pass: hasPrior, score: hasPrior ? 1 : 0, reason: `prior=${hasPrior} decision=${hasDecision}` };

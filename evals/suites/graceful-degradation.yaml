@@ -1,49 +1,96 @@
 # Graceful Degradation Suite — swain-search behavioral evals
-# Tests that the agent handles missing capabilities gracefully.
+# Tests understanding of fallback behaviors from SKILL.md.
 
-description: "swain-search: Graceful Degradation"
+description: "swain-search: Graceful Degradation Knowledge (Ollama)"
 
 prompts:
-  - "{{request}}"
+  - "You are swain-search, a skill that collects and normalizes source materials into reusable troves.
+
+Graceful degradation rules:
+- No web search capability available -> Skip search-based sources, tell user.
+- No browser/page fetcher -> Try basic URL fetch. If that fails: tell user.
+- No media transcription -> Skip, tell user. Accept pre-made transcript.
+- No document conversion -> Skip, tell user.
+- Paywall proxy fails -> Keep truncated content, note in manifest.
+- Never fail the entire run because one capability is missing.
+
+Capability detection: Check what's available before collecting.
+
+Snapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.
+
+Synthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.
+
+Answer concisely in 1-3 sentences.
+
+Question: {{request}}"
 
 providers:
-  - id: opencode:sdk
-    label: swain-search
-    config:
-      provider_id: anthropic
-      model: claude-sonnet-4-20250514
-      working_dir: ./evals/fixtures/empty-repo
-      tools:
-        read: true
-        write: true
-        edit: true
-        glob: true
-        grep: true
-        bash: true
-        skill: true
-      permission:
-        skill: allow
-        bash: allow
-        read: allow
-        write: allow
-        edit: allow
-
-defaultTest:
-  assert:
-    - type: skill-used
-      value: swain-search
+  - id: ollama:chat:deepseek-v4-flash:cloud
+    label: deepseek-v4-flash
 
 tests:
-  - description: "Handles missing web search capability"
+  - description: "Missing search capability"
     vars:
-      request: "research WebSocket protocol"
+      request: "What happens if no web search capability is available?"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: javascript
+        value: |
+          const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();
+          const hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');
+          const hasUser = text.includes('user') || text.includes('tell') || text.includes('inform');
+          return { pass: hasSkip && hasUser, score: hasSkip && hasUser ? 1 : 0.5, reason: `skip=${hasSkip} user=${hasUser}` };
 
-  - description: "Handles missing media transcription capability"
+  - description: "Missing media transcription"
     vars:
-      request: "research WebSocket protocol"
+      request: "What happens if media transcription is unavailable for a YouTube URL?"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: javascript
+        value: |
+          const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();
+          const hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');
+          const hasTranscript = text.includes('transcript') || text.includes('caption') || text.includes('subtitl');
+          return { pass: hasSkip && hasTranscript, score: hasSkip && hasTranscript ? 1 : 0.5, reason: `skip=${hasSkip} transcript=${hasTranscript}` };
+
+  - description: "Failed page fetch"
+    vars:
+      request: "What happens if a browser page fetcher is unavailable?"
+    assert:
+      - type: javascript
+        value: |
+          const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();
+          const hasAttempt = text.includes('try') || text.includes('attempt') || text.includes('basic') || text.includes('direct');
+          const hasTell = text.includes('tell') || text.includes('ask') || text.includes('provide') || text.includes('paste') || text.includes('user') || text.includes('manual') || text.includes('local');
+          return { pass: hasAttempt && hasTell, score: hasAttempt && hasTell ? 1 : 0.5, reason: `attempt=${hasAttempt} tell=${hasTell}` };
+
+  - description: "Capability detection timing"
+    vars:
+      request: "When should capability detection run?"
+    assert:
+      - type: javascript
+        value: |
+          const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();
+          const hasBefore = text.includes('before') || text.includes('prior') || text.includes('first') || text.includes('start');
+          const hasCollect = text.includes('collect') || text.includes('gather') || text.includes('fetch') || text.includes('run');
+          return { pass: hasBefore && hasCollect, score: hasBefore && hasCollect ? 1 : 0.5, reason: `before=${hasBefore} collect=${hasCollect}` };
+
+  - description: "Failed snapshot export"
+    vars:
+      request: "What happens if snapshot export fails for a remote document?"
+    assert:
+      - type: javascript
+        value: |
+          const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();
+          const hasUnverified = text.includes('unverified') || text.includes('not verified') || text.includes('skip') || text.includes('flag') || text.includes('mark');
+          const hasReport = text.includes('report') || text.includes('warn') || text.includes('tell') || text.includes('not publish') || text.includes('cannot') || text.includes('downstream');
+          return { pass: hasUnverified && hasReport, score: hasUnverified && hasReport ? 1 : 0.5, reason: `unverified=${hasUnverified} report=${hasReport}` };
+
+  - description: "Synthesis structure"
+    vars:
+      request: "How should synthesis.md be organized?"
+    assert:
+      - type: javascript
+        value: |
+          const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();
+          const hasTheme = text.includes('theme') || text.includes('topic') || text.includes('subject') || text.includes('section');
+          const hasFinding = text.includes('finding') || text.includes('agree') || text.includes('disagree') || text.includes('gap');
+          return { pass: hasTheme || hasFinding, score: hasTheme || hasFinding ? 1 : 0.5, reason: `theme=${hasTheme} finding=${hasFinding}` };

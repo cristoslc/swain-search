@@ -1,0 +1,1038 @@
+{
+  "evalId": "eval-k7n-2026-06-09T14:54:03",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-06-09T14:54:03.117Z",
+    "prompts": [
+      {
+        "id": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+        "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+        "provider": "deepseek-v4-flash",
+        "metrics": {
+          "score": 8,
+          "testPassCount": 8,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 8,
+          "assertFailCount": 0,
+          "totalLatencyMs": 15276,
+          "tokenUsage": {
+            "prompt": 1702,
+            "completion": 762,
+            "cached": 0,
+            "total": 2464,
+            "numRequests": 8,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "saysNo=true verbatim=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst saysNo = out.includes('no') || out.includes('cannot') || out.includes('not') || out.includes(\"shouldn't\");\nconst hasVerbatim = out.includes('verbatim') || out.includes('evidence') || out.includes('summar') || out.includes('condense');\nreturn { pass: saysNo && hasVerbatim, score: saysNo && hasVerbatim ? 1 : 0.5, reason: `saysNo=${saysNo} verbatim=${hasVerbatim}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "82e1a2f1-daa7-46bf-abeb-500b89e15365",
+        "latencyMs": 2178,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: Can a normalized source file contain a summary of the original content?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "No, normalized source files must contain the original content verbatim as evidence and cannot contain summaries; only `synthesis.md` may include summaries.",
+          "tokenUsage": {
+            "prompt": 215,
+            "completion": 134,
+            "total": 349
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Verbatim mandate: sources are not summaries",
+          "vars": {
+            "request": "Can a normalized source file contain a summary of the original content?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst saysNo = out.includes('no') || out.includes('cannot') || out.includes('not') || out.includes(\"shouldn't\");\nconst hasVerbatim = out.includes('verbatim') || out.includes('evidence') || out.includes('summar') || out.includes('condense');\nreturn { pass: saysNo && hasVerbatim, score: saysNo && hasVerbatim ? 1 : 0.5, reason: `saysNo=${saysNo} verbatim=${hasVerbatim}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 215,
+          "completion": 134,
+          "cached": 0,
+          "total": 349,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "Can a normalized source file contain a summary of the original content?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "manifest=true sources=true synthesis=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasManifest = out.includes('manifest') || out.includes('manifest.yaml');\nconst hasSources = out.includes('sources') || out.includes('source');\nconst hasSynthesis = out.includes('synthesis') || out.includes('synthesis.md');\nreturn { pass: hasManifest && hasSources && hasSynthesis, score: (hasManifest + hasSources + hasSynthesis) / 3, reason: `manifest=${hasManifest} sources=${hasSources} synthesis=${hasSynthesis}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "aa3b79c2-1a9b-47df-8493-429347fd01c9",
+        "latencyMs": 2006,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What files does a trove directory contain?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "A trove directory contains `manifest.yaml`, a `sources/` subdirectory with source markdown files (`<source-id>.md`), and a `synthesis.md` file.",
+          "tokenUsage": {
+            "prompt": 211,
+            "completion": 104,
+            "total": 315
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Trove file structure",
+          "vars": {
+            "request": "What files does a trove directory contain?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasManifest = out.includes('manifest') || out.includes('manifest.yaml');\nconst hasSources = out.includes('sources') || out.includes('source');\nconst hasSynthesis = out.includes('synthesis') || out.includes('synthesis.md');\nreturn { pass: hasManifest && hasSources && hasSynthesis, score: (hasManifest + hasSources + hasSynthesis) / 3, reason: `manifest=${hasManifest} sources=${hasSources} synthesis=${hasSynthesis}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 211,
+          "completion": 104,
+          "cached": 0,
+          "total": 315,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What files does a trove directory contain?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "sha=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSha = out.includes('sha') || out.includes('hash') || out.includes('digest') || out.includes('hex');\nreturn { pass: hasSha, score: hasSha ? 1 : 0, reason: `sha=${hasSha}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "d1f8d1ca-4d70-435b-b285-854c0d0e5c63",
+        "latencyMs": 1596,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What format is used for content hashes?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Content hashes are bare hex SHA-256 digests.",
+          "tokenUsage": {
+            "prompt": 211,
+            "completion": 60,
+            "total": 271
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Content hash format",
+          "vars": {
+            "request": "What format is used for content hashes?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSha = out.includes('sha') || out.includes('hash') || out.includes('digest') || out.includes('hex');\nreturn { pass: hasSha, score: hasSha ? 1 : 0, reason: `sha=${hasSha}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 211,
+          "completion": 60,
+          "cached": 0,
+          "total": 271,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What format is used for content hashes?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "slug=true collision=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSlug = out.includes('slug') || out.includes('title') || out.includes('url') || out.includes('name');\nconst hasCollision = out.includes('collision') || out.includes('random') || out.includes('hex') || out.includes('duplicate');\nreturn { pass: hasSlug, score: hasSlug ? 1 : 0, reason: `slug=${hasSlug} collision=${hasCollision}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "d3483742-cfec-4bc0-a737-329d1ccb0212",
+        "latencyMs": 1635,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: How is a source ID determined when adding a new source?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Source IDs are derived as slugs from the source title or URL; if a collision occurs, random words or hex digits are appended.",
+          "tokenUsage": {
+            "prompt": 214,
+            "completion": 82,
+            "total": 296
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Source ID generation",
+          "vars": {
+            "request": "How is a source ID determined when adding a new source?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSlug = out.includes('slug') || out.includes('title') || out.includes('url') || out.includes('name');\nconst hasCollision = out.includes('collision') || out.includes('random') || out.includes('hex') || out.includes('duplicate');\nreturn { pass: hasSlug, score: hasSlug ? 1 : 0, reason: `slug=${hasSlug} collision=${hasCollision}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 214,
+          "completion": 82,
+          "cached": 0,
+          "total": 296,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "How is a source ID determined when adding a new source?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "commit=true hash=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasCommit = out.includes('commit') || out.includes('git');\nconst hasHash = out.includes('hash') || out.includes('stamp') || out.includes('history') || out.includes('record');\nreturn { pass: hasCommit && hasHash, score: hasCommit && hasHash ? 1 : 0.5, reason: `commit=${hasCommit} hash=${hasHash}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "8f8e7a60-8e03-4f73-aa07-993ecd61f981",
+        "latencyMs": 2035,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What is the dual-commit pattern?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "The dual-commit pattern consists of two commits: Commit A records the source content, and Commit B stamps the content hash into the manifest and any referencing artifacts.",
+          "tokenUsage": {
+            "prompt": 210,
+            "completion": 86,
+            "total": 296
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Dual-commit pattern purpose",
+          "vars": {
+            "request": "What is the dual-commit pattern?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasCommit = out.includes('commit') || out.includes('git');\nconst hasHash = out.includes('hash') || out.includes('stamp') || out.includes('history') || out.includes('record');\nreturn { pass: hasCommit && hasHash, score: hasCommit && hasHash ? 1 : 0.5, reason: `commit=${hasCommit} hash=${hasHash}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 210,
+          "completion": 86,
+          "cached": 0,
+          "total": 296,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What is the dual-commit pattern?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "snapshot=true verify=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSnapshot = out.includes('snapshot') || out.includes('raw') || out.includes('export');\nconst hasVerify = out.includes('verif') || out.includes('check') || out.includes('confirm') || out.includes('valid') || out.includes('metadata');\nreturn { pass: hasSnapshot && hasVerify, score: hasSnapshot && hasVerify ? 1 : 0.5, reason: `snapshot=${hasSnapshot} verify=${hasVerify}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "d85d840e-f64a-4317-bd9d-589d3f3855cc",
+        "latencyMs": 2343,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What must happen before a remote source is included in a trove?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Before a remote source is included in a trove, its raw snapshot must be fetched and its metadata verified, as specified by SPEC-220.",
+          "tokenUsage": {
+            "prompt": 216,
+            "completion": 118,
+            "total": 334
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Snapshot evidence gate",
+          "vars": {
+            "request": "What must happen before a remote source is included in a trove?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSnapshot = out.includes('snapshot') || out.includes('raw') || out.includes('export');\nconst hasVerify = out.includes('verif') || out.includes('check') || out.includes('confirm') || out.includes('valid') || out.includes('metadata');\nreturn { pass: hasSnapshot && hasVerify, score: hasSnapshot && hasVerify ? 1 : 0.5, reason: `snapshot=${hasSnapshot} verify=${hasVerify}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "tokenUsage": {
+          "prompt": 216,
+          "completion": 118,
+          "cached": 0,
+          "total": 334,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What must happen before a remote source is included in a trove?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "flag=true continue=false",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasFlag = out.includes('flag') || out.includes('mark') || out.includes('record') || out.includes('note');\nconst hasContinue = out.includes('continue') || out.includes('skip') || out.includes('proceed') || out.includes('move');\nreturn { pass: hasFlag || hasContinue, score: hasFlag || hasContinue ? 1 : 0.5, reason: `flag=${hasFlag} continue=${hasContinue}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "514ac525-70af-45bb-b0eb-f7f454f34227",
+        "latencyMs": 1798,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What happens when a web page fetch fails?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Failed fetches are recorded with a `failed: true` flag in the manifest rather than causing a hard failure.",
+          "tokenUsage": {
+            "prompt": 211,
+            "completion": 94,
+            "total": 305
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Failed source handling",
+          "vars": {
+            "request": "What happens when a web page fetch fails?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasFlag = out.includes('flag') || out.includes('mark') || out.includes('record') || out.includes('note');\nconst hasContinue = out.includes('continue') || out.includes('skip') || out.includes('proceed') || out.includes('move');\nreturn { pass: hasFlag || hasContinue, score: hasFlag || hasContinue ? 1 : 0.5, reason: `flag=${hasFlag} continue=${hasContinue}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 6,
+        "tokenUsage": {
+          "prompt": 211,
+          "completion": 94,
+          "cached": 0,
+          "total": 305,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What happens when a web page fetch fails?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "verbatim=true summary=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasVerbatim = out.includes('verbatim') || out.includes('raw') || out.includes('original') || out.includes('evidence') || out.includes('exact');\nconst hasSummary = out.includes('summar') || out.includes('theme') || out.includes('analysis') || out.includes('distill');\nreturn { pass: hasVerbatim && hasSummary, score: hasVerbatim && hasSummary ? 1 : 0.5, reason: `verbatim=${hasVerbatim} summary=${hasSummary}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "d4be3ec3-0e24-432e-9d6e-e278e2e7a6d4",
+        "latencyMs": 1685,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: What is the difference between a source file and synthesis.md?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "d385624a8e8622b090a12d7aef0e96cf3b2de30c9d27dbfea5390c9c074b32aa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Source files contain verbatim evidence from the original source material, while synthesis.md provides a summarized overview derived from those sources.",
+          "tokenUsage": {
+            "prompt": 214,
+            "completion": 84,
+            "total": 298
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Source vs synthesis distinction",
+          "vars": {
+            "request": "What is the difference between a source file and synthesis.md?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasVerbatim = out.includes('verbatim') || out.includes('raw') || out.includes('original') || out.includes('evidence') || out.includes('exact');\nconst hasSummary = out.includes('summar') || out.includes('theme') || out.includes('analysis') || out.includes('distill');\nreturn { pass: hasVerbatim && hasSummary, score: hasVerbatim && hasSummary ? 1 : 0.5, reason: `verbatim=${hasVerbatim} summary=${hasSummary}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 7,
+        "tokenUsage": {
+          "prompt": 214,
+          "completion": 84,
+          "cached": 0,
+          "total": 298,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What is the difference between a source file and synthesis.md?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 8,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 1702,
+        "completion": 762,
+        "cached": 0,
+        "total": 2464,
+        "numRequests": 8,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 3993,
+      "evaluationDurationMs": 3993
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "swain-search: Trove Structure Knowledge (Ollama)",
+    "prompts": [
+      "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nRules from SKILL.md: - Verbatim mandate: Sources are evidence, not summaries. Never summarize or condense source content. - Only synthesis.md may contain summaries. - Each trove lives at docs/troves/<trove-id>/ and contains manifest.yaml, sources/<source-id>/<source-id>.md, and synthesis.md. - Content hashes are bare hex SHA-256 digests. - Source IDs are slugs from the source title or URL. On collision, append random words or hex. - The dual-commit pattern: Commit A records content, Commit B stamps hash into manifest and referencing artifacts. - Remote sources require raw snapshot + metadata verification before normalization (SPEC-220). - Failed fetches are recorded with a failed: true flag in manifest (not a hard failure).\nAnswer the following question concisely in 1-3 sentences.\nQuestion: {{request}}"
+    ],
+    "providers": [
+      {
+        "id": "ollama:chat:deepseek-v4-flash:cloud",
+        "label": "deepseek-v4-flash"
+      }
+    ],
+    "tests": [
+      {
+        "description": "Verbatim mandate: sources are not summaries",
+        "vars": {
+          "request": "Can a normalized source file contain a summary of the original content?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst saysNo = out.includes('no') || out.includes('cannot') || out.includes('not') || out.includes(\"shouldn't\");\nconst hasVerbatim = out.includes('verbatim') || out.includes('evidence') || out.includes('summar') || out.includes('condense');\nreturn { pass: saysNo && hasVerbatim, score: saysNo && hasVerbatim ? 1 : 0.5, reason: `saysNo=${saysNo} verbatim=${hasVerbatim}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Trove file structure",
+        "vars": {
+          "request": "What files does a trove directory contain?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasManifest = out.includes('manifest') || out.includes('manifest.yaml');\nconst hasSources = out.includes('sources') || out.includes('source');\nconst hasSynthesis = out.includes('synthesis') || out.includes('synthesis.md');\nreturn { pass: hasManifest && hasSources && hasSynthesis, score: (hasManifest + hasSources + hasSynthesis) / 3, reason: `manifest=${hasManifest} sources=${hasSources} synthesis=${hasSynthesis}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Content hash format",
+        "vars": {
+          "request": "What format is used for content hashes?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSha = out.includes('sha') || out.includes('hash') || out.includes('digest') || out.includes('hex');\nreturn { pass: hasSha, score: hasSha ? 1 : 0, reason: `sha=${hasSha}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Source ID generation",
+        "vars": {
+          "request": "How is a source ID determined when adding a new source?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSlug = out.includes('slug') || out.includes('title') || out.includes('url') || out.includes('name');\nconst hasCollision = out.includes('collision') || out.includes('random') || out.includes('hex') || out.includes('duplicate');\nreturn { pass: hasSlug, score: hasSlug ? 1 : 0, reason: `slug=${hasSlug} collision=${hasCollision}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Dual-commit pattern purpose",
+        "vars": {
+          "request": "What is the dual-commit pattern?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasCommit = out.includes('commit') || out.includes('git');\nconst hasHash = out.includes('hash') || out.includes('stamp') || out.includes('history') || out.includes('record');\nreturn { pass: hasCommit && hasHash, score: hasCommit && hasHash ? 1 : 0.5, reason: `commit=${hasCommit} hash=${hasHash}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Snapshot evidence gate",
+        "vars": {
+          "request": "What must happen before a remote source is included in a trove?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasSnapshot = out.includes('snapshot') || out.includes('raw') || out.includes('export');\nconst hasVerify = out.includes('verif') || out.includes('check') || out.includes('confirm') || out.includes('valid') || out.includes('metadata');\nreturn { pass: hasSnapshot && hasVerify, score: hasSnapshot && hasVerify ? 1 : 0.5, reason: `snapshot=${hasSnapshot} verify=${hasVerify}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Failed source handling",
+        "vars": {
+          "request": "What happens when a web page fetch fails?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasFlag = out.includes('flag') || out.includes('mark') || out.includes('record') || out.includes('note');\nconst hasContinue = out.includes('continue') || out.includes('skip') || out.includes('proceed') || out.includes('move');\nreturn { pass: hasFlag || hasContinue, score: hasFlag || hasContinue ? 1 : 0.5, reason: `flag=${hasFlag} continue=${hasContinue}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Source vs synthesis distinction",
+        "vars": {
+          "request": "What is the difference between a source file and synthesis.md?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const out = (typeof output === \"string\" ? output : output.output || \"\").toLowerCase();\nconst hasVerbatim = out.includes('verbatim') || out.includes('raw') || out.includes('original') || out.includes('evidence') || out.includes('exact');\nconst hasSummary = out.includes('summar') || out.includes('theme') || out.includes('analysis') || out.includes('distill');\nreturn { pass: hasVerbatim && hasSummary, score: hasVerbatim && hasSummary ? 1 : 0.5, reason: `verbatim=${hasVerbatim} summary=${hasSummary}` };\n"
+          }
+        ]
+      }
+    ],
+    "env": {},
+    "outputPath": [
+      "evals/artifacts/trove-creation.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.15",
+    "nodeVersion": "v24.14.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-06-09T14:54:07.147Z",
+    "evaluationCreatedAt": "2026-06-09T14:54:03.117Z"
+  },
+  "vars": [
+    "request"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "showProgressBar": true,
+    "repeat": 1,
+    "maxConcurrency": 4,
+    "cache": false
+  }
+}

@@ -1,0 +1,812 @@
+{
+  "evalId": "eval-RCk-2026-06-09T14:52:27",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-06-09T14:52:27.129Z",
+    "prompts": [
+      {
+        "id": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+        "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+        "provider": "deepseek-v4-flash",
+        "metrics": {
+          "score": 6,
+          "testPassCount": 6,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 6,
+          "assertFailCount": 0,
+          "totalLatencyMs": 11949,
+          "tokenUsage": {
+            "prompt": 1149,
+            "completion": 660,
+            "cached": 0,
+            "total": 1809,
+            "numRequests": 6,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "skip=true user=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');\nconst hasUser = text.includes('user') || text.includes('tell') || text.includes('inform');\nreturn { pass: hasSkip && hasUser, score: hasSkip && hasUser ? 1 : 0.5, reason: `skip=${hasSkip} user=${hasUser}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "685bb255-9f84-458a-ae14-81003596b114",
+        "latencyMs": 1609,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: What happens if no web search capability is available?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "If no web search capability is available, the skill skips any search-based sources and informs the user accordingly, without failing the entire run.",
+          "tokenUsage": {
+            "prompt": 192,
+            "completion": 88,
+            "total": 280
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Missing search capability",
+          "vars": {
+            "request": "What happens if no web search capability is available?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');\nconst hasUser = text.includes('user') || text.includes('tell') || text.includes('inform');\nreturn { pass: hasSkip && hasUser, score: hasSkip && hasUser ? 1 : 0.5, reason: `skip=${hasSkip} user=${hasUser}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 192,
+          "completion": 88,
+          "cached": 0,
+          "total": 280,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What happens if no web search capability is available?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "skip=true transcript=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');\nconst hasTranscript = text.includes('transcript') || text.includes('caption') || text.includes('subtitl');\nreturn { pass: hasSkip && hasTranscript, score: hasSkip && hasTranscript ? 1 : 0.5, reason: `skip=${hasSkip} transcript=${hasTranscript}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "c2d161f5-c121-4017-a31a-0606344d0cc3",
+        "latencyMs": 1852,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: What happens if media transcription is unavailable for a YouTube URL?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "If media transcription is unavailable for a YouTube URL, swain-search will skip that source and inform the user, but it can accept a pre-made transcript if provided.",
+          "tokenUsage": {
+            "prompt": 194,
+            "completion": 131,
+            "total": 325
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Missing media transcription",
+          "vars": {
+            "request": "What happens if media transcription is unavailable for a YouTube URL?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');\nconst hasTranscript = text.includes('transcript') || text.includes('caption') || text.includes('subtitl');\nreturn { pass: hasSkip && hasTranscript, score: hasSkip && hasTranscript ? 1 : 0.5, reason: `skip=${hasSkip} transcript=${hasTranscript}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 194,
+          "completion": 131,
+          "cached": 0,
+          "total": 325,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What happens if media transcription is unavailable for a YouTube URL?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "attempt=true tell=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasAttempt = text.includes('try') || text.includes('attempt') || text.includes('basic') || text.includes('direct');\nconst hasTell = text.includes('tell') || text.includes('ask') || text.includes('provide') || text.includes('paste') || text.includes('user') || text.includes('manual') || text.includes('local');\nreturn { pass: hasAttempt && hasTell, score: hasAttempt && hasTell ? 1 : 0.5, reason: `attempt=${hasAttempt} tell=${hasTell}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "68e26e85-4090-4a4a-a746-20c59ac8fd14",
+        "latencyMs": 1802,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: What happens if a browser page fetcher is unavailable?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "If a browser page fetcher is unavailable, swain-search attempts a basic URL fetch instead; if that fails, it informs the user.",
+          "tokenUsage": {
+            "prompt": 193,
+            "completion": 124,
+            "total": 317
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Failed page fetch",
+          "vars": {
+            "request": "What happens if a browser page fetcher is unavailable?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasAttempt = text.includes('try') || text.includes('attempt') || text.includes('basic') || text.includes('direct');\nconst hasTell = text.includes('tell') || text.includes('ask') || text.includes('provide') || text.includes('paste') || text.includes('user') || text.includes('manual') || text.includes('local');\nreturn { pass: hasAttempt && hasTell, score: hasAttempt && hasTell ? 1 : 0.5, reason: `attempt=${hasAttempt} tell=${hasTell}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 193,
+          "completion": 124,
+          "cached": 0,
+          "total": 317,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What happens if a browser page fetcher is unavailable?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "before=true collect=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasBefore = text.includes('before') || text.includes('prior') || text.includes('first') || text.includes('start');\nconst hasCollect = text.includes('collect') || text.includes('gather') || text.includes('fetch') || text.includes('run');\nreturn { pass: hasBefore && hasCollect, score: hasBefore && hasCollect ? 1 : 0.5, reason: `before=${hasBefore} collect=${hasCollect}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "f7eb9c71-f2e6-42f5-ae6d-9368323f6135",
+        "latencyMs": 1592,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: When should capability detection run?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "Capability detection should run at the start of a task, before any collection or normalization steps, to avoid attempting unavailable operations gracefully.",
+          "tokenUsage": {
+            "prompt": 188,
+            "completion": 76,
+            "total": 264
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Capability detection timing",
+          "vars": {
+            "request": "When should capability detection run?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasBefore = text.includes('before') || text.includes('prior') || text.includes('first') || text.includes('start');\nconst hasCollect = text.includes('collect') || text.includes('gather') || text.includes('fetch') || text.includes('run');\nreturn { pass: hasBefore && hasCollect, score: hasBefore && hasCollect ? 1 : 0.5, reason: `before=${hasBefore} collect=${hasCollect}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 188,
+          "completion": 76,
+          "cached": 0,
+          "total": 264,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "When should capability detection run?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "unverified=true report=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasUnverified = text.includes('unverified') || text.includes('not verified') || text.includes('skip') || text.includes('flag') || text.includes('mark');\nconst hasReport = text.includes('report') || text.includes('warn') || text.includes('tell') || text.includes('not publish') || text.includes('cannot') || text.includes('downstream');\nreturn { pass: hasUnverified && hasReport, score: hasUnverified && hasReport ? 1 : 0.5, reason: `unverified=${hasUnverified} report=${hasReport}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "3de3295d-a464-4935-bbcc-365b313b2c0c",
+        "latencyMs": 2356,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: What happens if snapshot export fails for a remote document?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "If snapshot export fails for a remote document, it is marked as unverified and cannot be published downstream.",
+          "tokenUsage": {
+            "prompt": 193,
+            "completion": 97,
+            "total": 290
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Failed snapshot export",
+          "vars": {
+            "request": "What happens if snapshot export fails for a remote document?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasUnverified = text.includes('unverified') || text.includes('not verified') || text.includes('skip') || text.includes('flag') || text.includes('mark');\nconst hasReport = text.includes('report') || text.includes('warn') || text.includes('tell') || text.includes('not publish') || text.includes('cannot') || text.includes('downstream');\nreturn { pass: hasUnverified && hasReport, score: hasUnverified && hasReport ? 1 : 0.5, reason: `unverified=${hasUnverified} report=${hasReport}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 193,
+          "completion": 97,
+          "cached": 0,
+          "total": 290,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "What happens if snapshot export fails for a remote document?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "theme=true finding=true",
+              "assertion": {
+                "type": "javascript",
+                "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasTheme = text.includes('theme') || text.includes('topic') || text.includes('subject') || text.includes('section');\nconst hasFinding = text.includes('finding') || text.includes('agree') || text.includes('disagree') || text.includes('gap');\nreturn { pass: hasTheme || hasFinding, score: hasTheme || hasFinding ? 1 : 0.5, reason: `theme=${hasTheme} finding=${hasFinding}` };\n"
+              }
+            }
+          ]
+        },
+        "id": "d94ed416-78ad-4b2d-958e-b66fd3efd1b3",
+        "latencyMs": 2738,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: How should synthesis.md be organized?",
+          "label": "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}",
+          "config": {}
+        },
+        "promptId": "ee783cd9d6e0b729328bf242abbc822591b776585b5766470fdfbbae3196b8f2",
+        "promptIdx": 0,
+        "provider": {
+          "id": "ollama:chat:deepseek-v4-flash:cloud",
+          "label": "deepseek-v4-flash"
+        },
+        "response": {
+          "output": "synthesis.md should be organized by theme, grouping key findings, areas of agreement, disagreement, and gaps—rather than presenting information source by source.",
+          "tokenUsage": {
+            "prompt": 189,
+            "completion": 144,
+            "total": 333
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Synthesis structure",
+          "vars": {
+            "request": "How should synthesis.md be organized?"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasTheme = text.includes('theme') || text.includes('topic') || text.includes('subject') || text.includes('section');\nconst hasFinding = text.includes('finding') || text.includes('agree') || text.includes('disagree') || text.includes('gap');\nreturn { pass: hasTheme || hasFinding, score: hasTheme || hasFinding ? 1 : 0.5, reason: `theme=${hasTheme} finding=${hasFinding}` };\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "tokenUsage": {
+          "prompt": 189,
+          "completion": 144,
+          "cached": 0,
+          "total": 333,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "request": "How should synthesis.md be organized?"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 6,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 1149,
+        "completion": 660,
+        "cached": 0,
+        "total": 1809,
+        "numRequests": 6,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 4365,
+      "evaluationDurationMs": 4365
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "swain-search: Graceful Degradation Knowledge (Ollama)",
+    "prompts": [
+      "You are swain-search, a skill that collects and normalizes source materials into reusable troves.\nGraceful degradation rules: - No web search capability available -> Skip search-based sources, tell user. - No browser/page fetcher -> Try basic URL fetch. If that fails: tell user. - No media transcription -> Skip, tell user. Accept pre-made transcript. - No document conversion -> Skip, tell user. - Paywall proxy fails -> Keep truncated content, note in manifest. - Never fail the entire run because one capability is missing.\nCapability detection: Check what's available before collecting.\nSnapshot evidence gate: Remote sources need raw snapshot before normalize. If export fails: mark unverified, no downstream publish.\nSynthesis: Structure by theme (key findings, agreement, disagreement, gaps), not by source.\nAnswer concisely in 1-3 sentences.\nQuestion: {{request}}"
+    ],
+    "providers": [
+      {
+        "id": "ollama:chat:deepseek-v4-flash:cloud",
+        "label": "deepseek-v4-flash"
+      }
+    ],
+    "tests": [
+      {
+        "description": "Missing search capability",
+        "vars": {
+          "request": "What happens if no web search capability is available?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');\nconst hasUser = text.includes('user') || text.includes('tell') || text.includes('inform');\nreturn { pass: hasSkip && hasUser, score: hasSkip && hasUser ? 1 : 0.5, reason: `skip=${hasSkip} user=${hasUser}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Missing media transcription",
+        "vars": {
+          "request": "What happens if media transcription is unavailable for a YouTube URL?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasSkip = text.includes('skip') || text.includes('without') || text.includes('cannot');\nconst hasTranscript = text.includes('transcript') || text.includes('caption') || text.includes('subtitl');\nreturn { pass: hasSkip && hasTranscript, score: hasSkip && hasTranscript ? 1 : 0.5, reason: `skip=${hasSkip} transcript=${hasTranscript}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Failed page fetch",
+        "vars": {
+          "request": "What happens if a browser page fetcher is unavailable?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasAttempt = text.includes('try') || text.includes('attempt') || text.includes('basic') || text.includes('direct');\nconst hasTell = text.includes('tell') || text.includes('ask') || text.includes('provide') || text.includes('paste') || text.includes('user') || text.includes('manual') || text.includes('local');\nreturn { pass: hasAttempt && hasTell, score: hasAttempt && hasTell ? 1 : 0.5, reason: `attempt=${hasAttempt} tell=${hasTell}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Capability detection timing",
+        "vars": {
+          "request": "When should capability detection run?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasBefore = text.includes('before') || text.includes('prior') || text.includes('first') || text.includes('start');\nconst hasCollect = text.includes('collect') || text.includes('gather') || text.includes('fetch') || text.includes('run');\nreturn { pass: hasBefore && hasCollect, score: hasBefore && hasCollect ? 1 : 0.5, reason: `before=${hasBefore} collect=${hasCollect}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Failed snapshot export",
+        "vars": {
+          "request": "What happens if snapshot export fails for a remote document?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasUnverified = text.includes('unverified') || text.includes('not verified') || text.includes('skip') || text.includes('flag') || text.includes('mark');\nconst hasReport = text.includes('report') || text.includes('warn') || text.includes('tell') || text.includes('not publish') || text.includes('cannot') || text.includes('downstream');\nreturn { pass: hasUnverified && hasReport, score: hasUnverified && hasReport ? 1 : 0.5, reason: `unverified=${hasUnverified} report=${hasReport}` };\n"
+          }
+        ]
+      },
+      {
+        "description": "Synthesis structure",
+        "vars": {
+          "request": "How should synthesis.md be organized?"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "const text = (typeof output === 'string' ? output : output?.output || '').toLowerCase();\nconst hasTheme = text.includes('theme') || text.includes('topic') || text.includes('subject') || text.includes('section');\nconst hasFinding = text.includes('finding') || text.includes('agree') || text.includes('disagree') || text.includes('gap');\nreturn { pass: hasTheme || hasFinding, score: hasTheme || hasFinding ? 1 : 0.5, reason: `theme=${hasTheme} finding=${hasFinding}` };\n"
+          }
+        ]
+      }
+    ],
+    "env": {},
+    "outputPath": [
+      "evals/artifacts/graceful-degradation.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.15",
+    "nodeVersion": "v24.14.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-06-09T14:52:31.532Z",
+    "evaluationCreatedAt": "2026-06-09T14:52:27.129Z"
+  },
+  "vars": [
+    "request"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "showProgressBar": true,
+    "repeat": 1,
+    "maxConcurrency": 4,
+    "cache": false
+  }
+}

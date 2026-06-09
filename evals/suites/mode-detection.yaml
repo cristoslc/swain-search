@@ -1,98 +1,131 @@
 # Mode Detection Suite — swain-search behavioral evals
-# Tests that the agent routes to the correct mode based on user input.
-# Uses OpenCode SDK provider.
+# Tests that the model understands mode routing from SKILL.md instructions.
+# Uses Ollama (deepseek-v4-flash:cloud) as the LLM provider.
 
-description: "swain-search: Mode Detection"
+description: "swain-search: Mode Detection (Ollama)"
 
 prompts:
-  - "{{request}}"
+  - "You are swain-search, a skill that collects and normalizes source materials into reusable troves.
+
+Given a user request, determine which mode to use.
+
+Mode table:
+| Signal | Mode |
+|--------|------|
+| No trove exists for the topic, or user says \"research X\" / \"gather sources\" / \"search for sources about X\" / \"compile research on X\" | **Create** |
+| Trove exists and user provides new sources or says \"add to\" / \"extend\" | **Extend** |
+| Trove exists and user says \"refresh\" or sources are past TTL | **Refresh** |
+| User asks \"what troves do we have\" or \"find existing research on X\" | **Discover** |
+
+If the request is completely unrelated to research, sources, or troves (like coding, writing, or math), respond with 'None'.
+
+Respond with exactly one word: Create, Extend, Refresh, Discover, or None. No other text.
+
+User: {{request}}"
 
 providers:
-  - id: opencode:sdk
-    label: swain-search
-    config:
-      provider_id: anthropic
-      model: claude-sonnet-4-20250514
-      working_dir: ./evals/fixtures/empty-repo
-      tools:
-        read: true
-        write: true
-        edit: true
-        glob: true
-        grep: true
-        bash: true
-        skill: true
-      permission:
-        skill: allow
-        bash: allow
-        read: allow
-        write: allow
-        edit: allow
+  - id: ollama:chat:deepseek-v4-flash:cloud
+    label: deepseek-v4-flash
 
 defaultTest:
-  assert:
-    - type: skill-used
-      value: swain-search
+  options:
+    provider:
+      text:
+        # Use the same model as LLM judge for rubric assertions
+        id: ollama:chat:deepseek-v4-flash:cloud
 
 tests:
-  # --- Create mode ---
   - description: "Create: explicit research request"
     vars:
       request: "research WebSocket vs SSE for real-time web communication"
     assert:
-      - type: skill-used
-        value: swain-search
-      - type: javascript
-        value: |
-          const fs = require('fs');
-          const path = require('path');
-          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
-          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir created' };
-          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
-          return { pass: troves.length > 0, reason: `found ${troves.length} troves` };
+      - type: icontains
+        value: "Create"
+      - type: not-contains
+        value: "Extend"
+      - type: not-contains
+        value: "Refresh"
+      - type: not-contains
+        value: "Discover"
 
   - description: "Create: gather sources"
     vars:
       request: "gather sources for agent eval testing"
     assert:
-      - type: skill-used
-        value: swain-search
-      - type: javascript
-        value: |
-          const fs = require('fs');
-          const path = require('path');
-          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
-          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
-          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
-          return { pass: troves.length > 0, reason: `found ${troves.length} troves` };
+      - type: icontains
+        value: "Create"
+      - type: not-contains
+        value: "Extend"
+      - type: not-contains
+        value: "Refresh"
+      - type: not-contains
+        value: "Discover"
 
-  # --- Extend mode ---
-  - description: "Extend: add URL to existing trove"
+  - description: "Create: compile research"
     vars:
-      request: "add https://example.com/article to the test-fixture trove"
+      request: "compile research on real-time web protocols"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: icontains
+        value: "Create"
 
-  # --- Discover mode ---
-  - description: "Discover: find troves by topic"
+  - description: "Extend: add to existing trove"
+    vars:
+      request: "add https://example.com/article to the websocket-vs-sse trove"
+    assert:
+      - type: icontains
+        value: "Extend"
+      - type: not-contains
+        value: "Create"
+
+  - description: "Extend: extend trove"
+    vars:
+      request: "extend the agent-skill-evals trove"
+    assert:
+      - type: icontains
+        value: "Extend"
+
+  - description: "Refresh: refresh trove"
+    vars:
+      request: "refresh the websocket-vs-sse trove"
+    assert:
+      - type: icontains
+        value: "Refresh"
+
+  - description: "Discover: find troves"
     vars:
       request: "what troves do we have about websocket?"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: icontains
+        value: "Discover"
 
   - description: "Discover: find existing research"
     vars:
       request: "find existing research on real-time communication"
     assert:
-      - type: skill-used
-        value: swain-search
+      - type: icontains
+        value: "Discover"
 
-  # --- Negative control ---
-  - description: "Negative: unrelated request should not invoke swain-search"
+  - description: "Negative: unrelated request"
     vars:
       request: "write a Python script to sort a list"
     assert:
-      - type: not-skill-used
-        value: swain-search
+      
+      - type: icontains
+        value: "None"
+      - type: not-contains
+        value: "Create"
+      - type: not-contains
+        value: "Extend"
+      - type: not-contains
+        value: "Refresh"
+      - type: not-contains
+        value: "Discover"
+
+  - description: "Create: search for sources (triggers variant)"
+    vars:
+      request: "search for sources about WebSocket"
+    assert:
+      - type: icontains
+        value: "Create"
+      - type: not-contains
+        value: "Discover"

@@ -1,9 +1,8 @@
-# swain-search: Root Eval Config
-# Runs all behavioral and adversarial suites.
+# swain-search: Full Eval Suite (Ollama)
+# Runs all knowledge-based and adversarial suites using Ollama provider.
 
-description: "swain-search: Full Eval Suite"
+description: "swain-search: Full Eval Suite (Ollama)"
 
-# Import all suite configs
 tests:
   - ./suites/mode-detection.yaml
   - ./suites/trove-creation.yaml
