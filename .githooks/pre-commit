@@ -1,32 +1,44 @@
 #!/usr/bin/env bash
-# pre-commit — Run swain-search smoke evals before commit
-# Only triggers on changes to SKILL.md, spokes/, scripts/, references/
+# pre-commit — Run swain-search evals before commit
+# Triggers on changes to SKILL.md, spokes/, scripts/, references/
 
 CHANGED=$(git diff --cached --name-only | grep -E '^(SKILL\.md|spokes/|scripts/|references/)' || true)
 if [ -z "$CHANGED" ]; then
     exit 0
 fi
 
-echo "=== swain-search: Running smoke evals ==="
+echo "=== swain-search: Running evals ==="
 cd "$(git rev-parse --show-toplevel)"
+FAILS=0
 
-npx promptfoo@latest eval \
-  -c evals/suites/mode-detection.yaml \
-  --no-cache \
-  -o evals/artifacts/smoke-results.json 2>/dev/null
+# Tier 1: Script-level tests (fast, <1s each)
+echo "--- Script tests ---"
+for f in tests/test-*.sh; do
+    base=$(basename "$f")
+    if echo "$base" | grep -q "^test-deep-"; then
+        # Skip deep behavioral tests in pre-commit (need API credits)
+        continue
+    fi
+    bash "$f" 2>&1 | tail -1
+done
 
-FAILURES=$(python3 -c "
-import json
-with open('evals/artifacts/smoke-results.json') as f:
-    results = json.load(f)
-fails = [r for r in results.get('results', []) if r.get('pass') == False]
-print(len(fails))
-" 2>/dev/null || echo "1")
+# Tier 2: Ollama evals (fast, ~30s total, ~$0)
+echo "--- Ollama evals ---"
+for suite in mode-detection trove-creation prior-art graceful-degradation adversarial; do
+    RESULTS=$(npx promptfoo@latest eval -c "evals/suites/$suite.yaml" --no-cache 2>&1)
+    if echo "$RESULTS" | grep -q "100%)"; then
+        echo "  PASS: $suite"
+    else
+        FAILS=$((FAILS + 1))
+        echo "  FAIL: $suite"
+        echo "$RESULTS" | grep "failed"
+    fi
+done
 
-if [ "$FAILURES" -gt 0 ]; then
-    echo "FAIL: $FAILURES smoke test(s) failed. Run 'npx promptfoo view' to inspect."
+if [ "$FAILS" -gt 0 ]; then
+    echo "FAIL: $FAILS suite(s) failed. Run 'npx promptfoo view' to inspect."
     exit 1
 fi
 
-echo "PASS: All smoke tests passed."
+echo "PASS: All evals passed."
 exit 0
