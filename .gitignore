@@ -61,8 +61,8 @@ Desktop.ini
 .agents/trovewatch.log
 .agents/trovewatch.vars.json
 
-# Project troves (generated output, not source)
-docs/troves/
+# Project troves (versioned research artifacts — do not gitignore)
+# docs/troves/
 
 # Testing artifacts
 .pytest_cache/

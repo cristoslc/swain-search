@@ -1,0 +1,48 @@
+trove-id: agent-skill-evals
+created: 2026-06-09
+tags: [agent-evaluation, skill-testing, regression-testing, behavioral-testing, llm-evals, agent-quality]
+freshness-ttl:
+  web: P90D
+refreshed: 2026-06-09
+sources:
+  - id: anthropic-demystifying-evals
+    url: "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+    title: "Demystifying Evals for AI Agents"
+    type: web
+    fetched: 2026-06-09
+    hash: 8a55e92e77d867a1f1c567b58632f2f689bb61b5301625d547262111ca9a9b39
+    proxy-used: null
+  - id: openai-eval-skills
+    url: "https://developers.openai.com/blog/eval-skills"
+    title: "Testing Agent Skills Systematically with Evals"
+    type: web
+    fetched: 2026-06-09
+    hash: 1a2acf214327cf7e4906e9455a63bedeb07b673bec345ceab32d5ce10e7112c3
+    proxy-used: null
+  - id: agentassay-paper
+    url: "https://arxiv.org/abs/2603.02601"
+    title: "AgentAssay: Token-Efficient Regression Testing for Non-Deterministic AI Agent Workflows"
+    type: web
+    fetched: 2026-06-09
+    hash: 07ed5b4216fcea1644b8c3bbb4eb8af8603dd10b86f40f6a32eb52262c010258
+    proxy-used: null
+  - id: promptfoo-agent-skills
+    url: "https://www.promptfoo.dev/docs/guides/test-agent-skills/"
+    title: "Test Agent Skills"
+    type: web
+    fetched: 2026-06-09
+    hash: df3e42eef7bc5d8836064c66c0f26829bea72fdf98134ada0f68b379511098f1
+    proxy-used: null
+  - id: braintrust-ai-agent-eval
+    url: "https://www.braintrust.dev/articles/ai-agent-evaluation-framework"
+    title: "AI Agent Evaluation Framework"
+    type: web
+    fetched: 2026-06-09
+    hash: bb23fce149f6d230fd49fc1a7183ecdafa336950240d100a56137976450a1158
+    proxy-used: null
+history:
+  - event: created
+    date: 2026-06-09
+    commit: "--"
+    sources: 5
+referenced-by: []
