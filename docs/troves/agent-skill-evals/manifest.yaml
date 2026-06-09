@@ -17,28 +17,28 @@ sources:
     title: "Testing Agent Skills Systematically with Evals"
     type: web
     fetched: 2026-06-09
-    hash: 1a2acf214327cf7e4906e9455a63bedeb07b673bec345ceab32d5ce10e7112c3
+    hash: 3cdbb9f07f4d1152e5710524e511c5b94c5e62d9b455f69763a994c19f072dda
     proxy-used: null
   - id: agentassay-paper
     url: "https://arxiv.org/abs/2603.02601"
     title: "AgentAssay: Token-Efficient Regression Testing for Non-Deterministic AI Agent Workflows"
     type: web
     fetched: 2026-06-09
-    hash: 07ed5b4216fcea1644b8c3bbb4eb8af8603dd10b86f40f6a32eb52262c010258
+    hash: 831cb4eedb15a9a474954764b0f1bbaf612a07564cac8401458b85b1de58091c
     proxy-used: null
   - id: promptfoo-agent-skills
     url: "https://www.promptfoo.dev/docs/guides/test-agent-skills/"
     title: "Test Agent Skills"
     type: web
     fetched: 2026-06-09
-    hash: df3e42eef7bc5d8836064c66c0f26829bea72fdf98134ada0f68b379511098f1
+    hash: 5d2fd4c61f1eceaf31f6adb0f398b217615e33e5765bf4416
     proxy-used: null
   - id: braintrust-ai-agent-eval
     url: "https://www.braintrust.dev/articles/ai-agent-evaluation-framework"
     title: "AI Agent Evaluation Framework"
     type: web
     fetched: 2026-06-09
-    hash: bb23fce149f6d230fd49fc1a7183ecdafa336950240d100a56137976450a1158
+    hash: 29d8878caa1df21f5652e43ff45f621911123d1f7f70c65992a731a874d98b58
     proxy-used: null
 history:
   - event: created
