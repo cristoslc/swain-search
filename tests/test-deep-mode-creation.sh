@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # test-deep-mode-creation.sh — Deep behavioral test: actual swain-search skill invocation
-# Creates a test repo, invokes claude with the swain-search skill, verifies trove structure.
-# SKIPPED if Claude API credits are insufficient — run manually when credits available.
+# Creates a test repo, invokes opencode with the swain-search skill, verifies trove structure.
+# Attaches to the local opencode server (port 4096) via --attach.
 #
 # Usage: bash tests/test-deep-mode-creation.sh
+# Override model: MODEL=ollama/gemma4:26b bash tests/test-deep-mode-creation.sh
 
 set +e
 
@@ -19,15 +20,18 @@ skip() { echo "  SKIP: $1 — $2"; SKIP=$((SKIP + 1)); }
 
 echo "=== Deep Behavioral: Mode Creation ==="
 
-# Check credits first
-CREDIT_CHECK=$(claude -p "hello" --print 2>&1 || true)
-if echo "$CREDIT_CHECK" | grep -qi "credit balance\|insufficient\|billing"; then
-  echo "  (Claude API credits low — tests require credits to invoke the skill)"
-  for ac in setup AC1 AC2 AC3 AC4 AC5 AC6 AC7; do skip "$ac" "requires API credits"; done
+# Load server environment for password
+if [ -f "$HOME/.cache/opencode/serve.env" ]; then
+  source "$HOME/.cache/opencode/serve.env"
+else
+  echo "  SKIP: serve.env not found — opencode server may not be running"
+  for ac in setup AC1 AC2 AC3 AC4 AC5 AC6 AC7; do skip "$ac" "requires opencode server"; done
   echo ""
   echo "=== Results: $PASS passed, $FAIL failed, $SKIP skipped ==="
   exit 0
 fi
+
+MODEL="${MODEL:-ollama-cloud/deepseek-v4-flash:cloud}"
 
 TMPDIR="$(mktemp -d)"
 cleanup() { rm -rf "$TMPDIR"; }
@@ -56,18 +60,25 @@ else
   fail "skill files" "SKILL.md missing after copy"
 fi
 
-echo "--- AC1: Invoke swain-search to create a trove ---"
-output=$(claude -p "Use the swain-search skill to research 'testing LLM agent skills' for a spike. Create a trove with at least 2 sources." \
-  --allowedTools "Bash Read Write Edit Glob Grep Skill" \
-  --add-dir "$TMPDIR" \
-  --print 2>&1)
+echo "--- AC1: Invoke opencode to create a trove (model: $MODEL) ---"
+echo "  (starting, streaming output below...)"
+OUTFILE=$(mktemp)
+opencode run \
+  --model "$MODEL" \
+  --attach http://localhost:4096 \
+  --dir "$TMPDIR" \
+  --dangerously-skip-permissions \
+  "Use the swain-search skill to research 'testing LLM agent skills' for a spike. Create a trove with at least 2 sources." \
+  2>&1 | tee "$OUTFILE"
 status=$?
-
+echo ""
+echo "  (opencode exited with code $status)"
 if [[ $status -eq 0 ]]; then
-  pass "AC1: claude exits 0"
+  pass "AC1: opencode exits 0"
 else
   fail "AC1: exit code" "expected 0, got $status"
 fi
+rm -f "$OUTFILE"
 
 echo "--- AC2: Trove directory created ---"
 TROVES=$(ls docs/troves/ 2>/dev/null)
@@ -81,17 +92,27 @@ echo "--- AC3: manifest.yaml has required fields ---"
 FIRST_TROVE=$(ls docs/troves/ 2>/dev/null | head -1)
 if [[ -n "$FIRST_TROVE" && -f "docs/troves/$FIRST_TROVE/manifest.yaml" ]]; then
   MANIFEST="docs/troves/$FIRST_TROVE/manifest.yaml"
-  python3 -c "
+  AC3_OUT=$(python3 -c "
 import yaml, sys
 with open('$MANIFEST') as f:
     m = yaml.safe_load(f)
-required = ['trove-id', 'created', 'tags', 'sources']
+if m is None:
+    print('FAIL: empty/none manifest')
+    sys.exit(1)
+required = ['trove', 'created', 'tags', 'sources']
 for key in required:
     if key not in m:
-        print(f'missing: {key}')
+        print(f'FAIL: missing {key}')
         sys.exit(1)
-print('all required fields present')
-" | grep -q "all required" && pass "AC3: manifest has required fields" || fail "AC3: manifest" "missing required fields"
+print('PASS: all required fields')
+print('keys: ' + ', '.join(m.keys()))
+" 2>&1)
+  if echo "$AC3_OUT" | head -1 | grep -q "^PASS:"; then
+    pass "AC3: manifest has required fields"
+  else
+    echo "  DEBUG manifest: $AC3_OUT"
+    fail "AC3: manifest" "missing required fields"
+  fi
 else
   fail "AC3: manifest" "manifest.yaml not found"
 fi
