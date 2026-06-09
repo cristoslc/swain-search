@@ -4,10 +4,28 @@ See `PURPOSE.md` for the project's intent.
 
 ## Starting points
 
-- `SKILL.md` — Full skill definition (modes, workflows, normalization rules)
+- `SKILL.md` — Skill hub (frontmatter, mode table, core policies, links to spokes)
+- `spokes/` — Detailed procedure docs linked from SKILL.md
 - `scripts/` — Shell and Python scripts invoked by the skill
 - `references/normalization-formats.md` — Per-source-type markdown format specs
 - `references/manifest-schema.md` — Manifest YAML schema
+
+## SKILL.md hub-and-spoke architecture
+
+`SKILL.md` is the concise hub. It links to spoke files in `spokes/` for detailed procedures:
+
+| Spoke | Purpose |
+|-------|---------|
+| `spokes/prior-art-check.md` | Scanning existing troves before creating new ones |
+| `spokes/verbatim-mandate.md` | Sources are evidence, not summaries |
+| `spokes/snapshot-evidence-gate.md` | SPEC-220 raw snapshot + verification flow |
+| `spokes/source-collection.md` | Per-source-type collection procedures (web, media, X-thread, CLI, etc.) |
+| `spokes/create-mode.md` | Create a new trove from scratch |
+| `spokes/extend-mode.md` | Add sources to an existing trove |
+| `spokes/refresh-mode.md` | Re-fetch stale sources |
+| `spokes/discover-mode.md` | Find existing troves by topic |
+| `spokes/capability-detection.md` | Tool availability checks and fallbacks |
+| `spokes/linking-from-artifacts.md` | Dual-commit pattern and `trove: <id>@<hash>` linking |
 
 ## Key rules
 
