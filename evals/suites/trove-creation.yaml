@@ -1,0 +1,89 @@
+# Trove Creation Suite — swain-search behavioral evals
+# Tests that Create mode produces the correct trove structure.
+
+description: "swain-search: Trove Creation"
+
+prompts:
+  - "{{request}}"
+
+providers:
+  - id: opencode:sdk
+    label: swain-search
+    config:
+      provider_id: anthropic
+      model: claude-sonnet-4-20250514
+      working_dir: ./evals/fixtures/empty-repo
+      tools:
+        read: true
+        write: true
+        edit: true
+        glob: true
+        grep: true
+        bash: true
+        skill: true
+      permission:
+        skill: allow
+        bash: allow
+        read: allow
+        write: allow
+        edit: allow
+
+defaultTest:
+  assert:
+    - type: skill-used
+      value: swain-search
+
+tests:
+  - description: "Creates manifest.yaml with required fields"
+    vars:
+      request: "research WebSocket protocol for a spike"
+    assert:
+      - type: javascript
+        value: |
+          const fs = require('fs');
+          const path = require('path');
+          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
+          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
+          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
+          if (troves.length === 0) return { pass: false, reason: 'no troves found' };
+          const manifest = path.join(trovesDir, troves[0], 'manifest.yaml');
+          if (!fs.existsSync(manifest)) return { pass: false, reason: 'no manifest.yaml' };
+          const content = fs.readFileSync(manifest, 'utf8');
+          const hasId = content.includes('trove-id:') || content.includes('trove:');
+          const hasCreated = content.includes('created:');
+          const hasTags = content.includes('tags:');
+          const hasSources = content.includes('sources:');
+          return {
+            pass: hasId && hasCreated && hasTags && hasSources,
+            reason: `id=${hasId} created=${hasCreated} tags=${hasTags} sources=${hasSources}`
+          };
+
+  - description: "Creates sources/ directory"
+    vars:
+      request: "research WebSocket protocol for a spike"
+    assert:
+      - type: javascript
+        value: |
+          const fs = require('fs');
+          const path = require('path');
+          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
+          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
+          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
+          if (troves.length === 0) return { pass: false, reason: 'no troves' };
+          const sourcesDir = path.join(trovesDir, troves[0], 'sources');
+          return { pass: fs.existsSync(sourcesDir), reason: `sources dir exists: ${fs.existsSync(sourcesDir)}` };
+
+  - description: "Creates synthesis.md"
+    vars:
+      request: "research WebSocket protocol for a spike"
+    assert:
+      - type: javascript
+        value: |
+          const fs = require('fs');
+          const path = require('path');
+          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
+          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
+          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
+          if (troves.length === 0) return { pass: false, reason: 'no troves' };
+          const synthesis = path.join(trovesDir, troves[0], 'synthesis.md');
+          return { pass: fs.existsSync(synthesis), reason: `synthesis exists: ${fs.existsSync(synthesis)}` };

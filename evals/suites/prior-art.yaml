@@ -1,0 +1,49 @@
+# Prior Art Check Suite — swain-search behavioral evals
+# Tests that the agent scans existing troves before creating new ones.
+
+description: "swain-search: Prior Art Check"
+
+prompts:
+  - "{{request}}"
+
+providers:
+  - id: opencode:sdk
+    label: swain-search
+    config:
+      provider_id: anthropic
+      model: claude-sonnet-4-20250514
+      working_dir: ./evals/fixtures/empty-repo
+      tools:
+        read: true
+        write: true
+        edit: true
+        glob: true
+        grep: true
+        bash: true
+        skill: true
+      permission:
+        skill: allow
+        bash: allow
+        read: allow
+        write: allow
+        edit: allow
+
+defaultTest:
+  assert:
+    - type: skill-used
+      value: swain-search
+
+tests:
+  - description: "Reports prior art when trove exists with matching tag"
+    vars:
+      request: "research WebSocket protocol"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  - description: "No prior art when no troves exist"
+    vars:
+      request: "research quantum computing for a spike"
+    assert:
+      - type: skill-used
+        value: swain-search

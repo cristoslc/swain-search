@@ -1,0 +1,12 @@
+# swain-search: Root Eval Config
+# Runs all behavioral and adversarial suites.
+
+description: "swain-search: Full Eval Suite"
+
+# Import all suite configs
+tests:
+  - ./suites/mode-detection.yaml
+  - ./suites/trove-creation.yaml
+  - ./suites/prior-art.yaml
+  - ./suites/graceful-degradation.yaml
+  - ./suites/adversarial.yaml

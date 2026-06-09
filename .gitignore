@@ -67,3 +67,6 @@ Desktop.ini
 # Testing artifacts
 .pytest_cache/
 .ruff_cache/
+
+# Eval artifacts (generated output)
+evals/artifacts/

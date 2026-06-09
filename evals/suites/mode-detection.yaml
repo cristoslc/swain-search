@@ -1,0 +1,98 @@
+# Mode Detection Suite — swain-search behavioral evals
+# Tests that the agent routes to the correct mode based on user input.
+# Uses OpenCode SDK provider.
+
+description: "swain-search: Mode Detection"
+
+prompts:
+  - "{{request}}"
+
+providers:
+  - id: opencode:sdk
+    label: swain-search
+    config:
+      provider_id: anthropic
+      model: claude-sonnet-4-20250514
+      working_dir: ./evals/fixtures/empty-repo
+      tools:
+        read: true
+        write: true
+        edit: true
+        glob: true
+        grep: true
+        bash: true
+        skill: true
+      permission:
+        skill: allow
+        bash: allow
+        read: allow
+        write: allow
+        edit: allow
+
+defaultTest:
+  assert:
+    - type: skill-used
+      value: swain-search
+
+tests:
+  # --- Create mode ---
+  - description: "Create: explicit research request"
+    vars:
+      request: "research WebSocket vs SSE for real-time web communication"
+    assert:
+      - type: skill-used
+        value: swain-search
+      - type: javascript
+        value: |
+          const fs = require('fs');
+          const path = require('path');
+          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
+          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir created' };
+          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
+          return { pass: troves.length > 0, reason: `found ${troves.length} troves` };
+
+  - description: "Create: gather sources"
+    vars:
+      request: "gather sources for agent eval testing"
+    assert:
+      - type: skill-used
+        value: swain-search
+      - type: javascript
+        value: |
+          const fs = require('fs');
+          const path = require('path');
+          const trovesDir = path.join(process.cwd(), 'docs', 'troves');
+          if (!fs.existsSync(trovesDir)) return { pass: false, reason: 'no troves dir' };
+          const troves = fs.readdirSync(trovesDir).filter(d => fs.statSync(path.join(trovesDir, d)).isDirectory());
+          return { pass: troves.length > 0, reason: `found ${troves.length} troves` };
+
+  # --- Extend mode ---
+  - description: "Extend: add URL to existing trove"
+    vars:
+      request: "add https://example.com/article to the test-fixture trove"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  # --- Discover mode ---
+  - description: "Discover: find troves by topic"
+    vars:
+      request: "what troves do we have about websocket?"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  - description: "Discover: find existing research"
+    vars:
+      request: "find existing research on real-time communication"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  # --- Negative control ---
+  - description: "Negative: unrelated request should not invoke swain-search"
+    vars:
+      request: "write a Python script to sort a list"
+    assert:
+      - type: not-skill-used
+        value: swain-search

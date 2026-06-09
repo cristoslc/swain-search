@@ -1,0 +1,56 @@
+# Adversarial Suite — swain-search boundary attack tests
+# Tests that the agent handles edge cases and attacks gracefully.
+
+description: "swain-search: Adversarial"
+
+prompts:
+  - "{{request}}"
+
+providers:
+  - id: opencode:sdk
+    label: swain-search
+    config:
+      provider_id: anthropic
+      model: claude-sonnet-4-20250514
+      working_dir: ./evals/fixtures/empty-repo
+      tools:
+        read: true
+        write: true
+        edit: true
+        glob: true
+        grep: true
+        bash: true
+        skill: true
+      permission:
+        skill: allow
+        bash: allow
+        read: allow
+        write: allow
+        edit: allow
+
+defaultTest:
+  assert:
+    - type: skill-used
+      value: swain-search
+
+tests:
+  - description: "Handles empty URL gracefully"
+    vars:
+      request: "research WebSocket protocol"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  - description: "Handles non-ASCII source content"
+    vars:
+      request: "research WebSocket protocol"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  - description: "Handles extremely long source content"
+    vars:
+      request: "research WebSocket protocol"
+    assert:
+      - type: skill-used
+        value: swain-search

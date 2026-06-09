@@ -1,0 +1,27 @@
+trove-id: test-fixture-trove
+created: 2026-06-09
+tags: [test, fixture, websocket]
+freshness-ttl:
+  web: P90D
+refreshed: 2026-06-09
+sources:
+  - id: mdn-websocket
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket"
+    title: "WebSocket API - MDN"
+    type: web
+    fetched: 2026-06-09
+    hash: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2
+    proxy-used: null
+  - id: whatwg-sse
+    url: "https://html.spec.whatwg.org/multipage/server-sent-events.html"
+    title: "Server-sent events - HTML Standard"
+    type: web
+    fetched: 2026-06-09
+    hash: d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5
+    proxy-used: null
+history:
+  - event: created
+    date: 2026-06-09
+    commit: abc1234
+    sources: 2
+referenced-by: []

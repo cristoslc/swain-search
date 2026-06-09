@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# pre-commit — Run swain-search smoke evals before commit
+# Only triggers on changes to SKILL.md, spokes/, scripts/, references/
+
+CHANGED=$(git diff --cached --name-only | grep -E '^(SKILL\.md|spokes/|scripts/|references/)' || true)
+if [ -z "$CHANGED" ]; then
+    exit 0
+fi
+
+echo "=== swain-search: Running smoke evals ==="
+cd "$(git rev-parse --show-toplevel)"
+
+npx promptfoo@latest eval \
+  -c evals/suites/mode-detection.yaml \
+  --no-cache \
+  -o evals/artifacts/smoke-results.json 2>/dev/null
+
+FAILURES=$(python3 -c "
+import json
+with open('evals/artifacts/smoke-results.json') as f:
+    results = json.load(f)
+fails = [r for r in results.get('results', []) if r.get('pass') == False]
+print(len(fails))
+" 2>/dev/null || echo "1")
+
+if [ "$FAILURES" -gt 0 ]; then
+    echo "FAIL: $FAILURES smoke test(s) failed. Run 'npx promptfoo view' to inspect."
+    exit 1
+fi
+
+echo "PASS: All smoke tests passed."
+exit 0

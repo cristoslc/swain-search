@@ -1,0 +1,49 @@
+# Graceful Degradation Suite — swain-search behavioral evals
+# Tests that the agent handles missing capabilities gracefully.
+
+description: "swain-search: Graceful Degradation"
+
+prompts:
+  - "{{request}}"
+
+providers:
+  - id: opencode:sdk
+    label: swain-search
+    config:
+      provider_id: anthropic
+      model: claude-sonnet-4-20250514
+      working_dir: ./evals/fixtures/empty-repo
+      tools:
+        read: true
+        write: true
+        edit: true
+        glob: true
+        grep: true
+        bash: true
+        skill: true
+      permission:
+        skill: allow
+        bash: allow
+        read: allow
+        write: allow
+        edit: allow
+
+defaultTest:
+  assert:
+    - type: skill-used
+      value: swain-search
+
+tests:
+  - description: "Handles missing web search capability"
+    vars:
+      request: "research WebSocket protocol"
+    assert:
+      - type: skill-used
+        value: swain-search
+
+  - description: "Handles missing media transcription capability"
+    vars:
+      request: "research WebSocket protocol"
+    assert:
+      - type: skill-used
+        value: swain-search
