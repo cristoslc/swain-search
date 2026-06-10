@@ -139,15 +139,114 @@ else
   fail "AC6: sources" "no source .md files found"
 fi
 
-echo "--- AC7: Verbatim mandate — sources contain original content ---"
-FIRST_SOURCE=$(find "docs/troves/$FIRST_TROVE/sources" -name "*.md" 2>/dev/null | head -1)
-if [[ -n "$FIRST_SOURCE" ]]; then
-  SIZE=$(wc -c < "$FIRST_SOURCE" | tr -d ' ')
-  if [[ "$SIZE" -gt 100 ]]; then
-    pass "AC7: source file has substantial content ($SIZE bytes)"
+echo "--- AC7: Verbatim mandate — source derived from raw snapshot, not AI summary ---"
+# Compares normalized source against the raw snapshot created during this test run.
+# Snapshot is an ephemeral intermediate artifact — only needed for verification.
+METADATA=".agents/search-snapshots/metadata.jsonl"
+
+if [[ -n "$FIRST_TROVE" && -f "$MANIFEST" && -f "$METADATA" ]]; then
+  AC7_OUT=$(python3 -c "
+import json, os, re, sys, yaml
+from difflib import SequenceMatcher
+
+with open('$MANIFEST') as f: manifest = yaml.safe_load(f)
+sources = manifest.get('sources', [])
+if not sources:
+    print('NO_SOURCES')
+    sys.exit(0)
+
+source_url = sources[0].get('url', '')
+if not source_url:
+    print('NO_URL')
+    sys.exit(0)
+
+# Look up the source URL in metadata.jsonl
+meta_path = '$METADATA'
+if not os.path.exists(meta_path):
+    print('NO_METADATA')
+    sys.exit(0)
+
+raw_path = None
+with open(meta_path) as f:
+    for line in f:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if entry.get('source_url') == source_url:
+            raw_path = entry.get('raw_path')
+            break
+
+if not raw_path or not os.path.exists(raw_path):
+    print(f'NO_RAW: {raw_path}')
+    sys.exit(0)
+
+# Read the normalized source file
+source_dir = 'docs/troves/$FIRST_TROVE/sources'
+src_id = sources[0].get('source-id', '')
+src_files = [os.path.join(source_dir, f) for f in os.listdir(source_dir) if f.endswith('.md')]
+if not src_files:
+    print('NO_SOURCE_FILE')
+    sys.exit(0)
+
+with open(src_files[0], encoding='utf-8', errors='replace') as f: src_content = f.read()
+if len(src_content) < 50:
+    print('SHORT')
+    sys.exit(0)
+
+# Read raw snapshot: strip HTML tags if it looks like HTML
+with open(raw_path, encoding='utf-8', errors='replace') as f: raw = f.read()
+if re.search(r'<\s*html|<body|<div|<p\b', raw, re.IGNORECASE):
+    raw_text = re.sub(r'<[^>]+>', ' ', raw)
+    raw_text = re.sub(r'\s+', ' ', raw_text)
+else:
+    raw_text = raw
+
+if len(raw_text) < 50:
+    print('RAW_SHORT')
+    sys.exit(0)
+
+# Check for substantial shared content via longest matching block
+# A faithful normalization should share a long contiguous sequence with the raw snapshot
+matcher = SequenceMatcher(None, src_content, raw_text)
+match = matcher.find_longest_match(0, len(src_content), 0, len(raw_text))
+match_len = match.size
+match_ratio = match_len / max(len(src_content), 1)
+
+if match_len >= 100:
+    # Strong signal: a long verbatim block from the original survived normalization
+    print(f'PASS:{match_len}:{match_ratio:.3f}')
+elif match_ratio >= 0.3:
+    # ~30%+ character overlap — likely faithful even without a single 100-char block
+    print(f'PASS:{match_len}:{match_ratio:.3f}')
+else:
+    print(f'FAIL:{match_len}:{match_ratio:.3f}')
+" 2>&1)
+  AC7_STATUS=$(echo "$AC7_OUT" | cut -d: -f1)
+  AC7_MATCH=$(echo "$AC7_OUT" | cut -d: -f2)
+  AC7_RATIO=$(echo "$AC7_OUT" | cut -d: -f3)
+  if [[ "$AC7_STATUS" == "PASS" ]]; then
+    pass "AC7: source matches raw snapshot (longest=$AC7_MATCH, ratio=$AC7_RATIO)"
+  elif [[ "$AC7_STATUS" == "NO_SOURCES" || "$AC7_STATUS" == "NO_URL" ]]; then
+    fail "AC7: manifest has no source entries"
+  elif [[ "$AC7_STATUS" == "NO_METADATA" ]]; then
+    fail "AC7: snapshot evidence gate not engaged — no metadata ledger"
+  elif [[ "$AC7_STATUS" == "NO_RAW" ]]; then
+    fail "AC7: snapshot raw file listed in metadata but not found ($AC7_MATCH)"
+  elif [[ "$AC7_STATUS" == "SHORT" ]]; then
+    fail "AC7: source too short for similarity analysis"
+  elif [[ "$AC7_STATUS" == "RAW_SHORT" ]]; then
+    fail "AC7: raw snapshot too short for similarity analysis"
   else
-    fail "AC7: source size" "only $SIZE bytes — may be summary not verbatim"
+    fail "AC7: source doesn't match raw snapshot" "longest_match=$AC7_MATCH chars, ratio=$AC7_RATIO"
   fi
+elif [[ -n "$FIRST_TROVE" && -f "$MANIFEST" ]]; then
+  fail "AC7: snapshot evidence gate not engaged — skill must use export-snapshot pipeline"
+else
+  fail "AC7: trove manifest not available for verification"
 fi
 
 echo ""
