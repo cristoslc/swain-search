@@ -19,13 +19,13 @@ If invoked from swain-design (e.g., spike entering Active), the artifact context
 
 ## Step 2 — Collect and normalize
 
-**Mandatory: every source must be a verbatim reproduction of the original document, not a summary.** The normalized source file is evidence — raw material for research. Condensing, paraphrasing, or extracting "key points" from the original is forbidden. Summarization belongs exclusively in `synthesis.md` (trove-level or per-source). See [spokes/verbatim-mandate.md](spokes/verbatim-mandate.md) for the full policy.
+**Mandatory: every source must be a verbatim reproduction of the original document, not a summary.** The normalized source file is evidence — raw material for research. Condensing, paraphrasing, or extracting "key points" from the original is forbidden. Summarization belongs exclusively in `synthesis.md` (trove-level or per-source). See [verbatim-mandate.md](verbatim-mandate.md) for the full policy.
 
-For each source, use the appropriate capability described in [spokes/source-collection.md](spokes/source-collection.md).
+For each source, use the appropriate capability described in [source-collection.md](source-collection.md).
 
 ## Step 3 — Generate manifest
 
-Create `manifest.yaml` following the schema in `references/manifest-schema.md`. Include:
+Create `manifest.yaml` following the schema in `manifest-schema.md`. Include:
 - Trove metadata (id, created date, tags)
 - Default freshness TTL per source type
 - One entry per source with provenance (URL/path, fetch date, content hash, type)
@@ -56,7 +56,7 @@ Keep it concise. The synthesis is a starting point, not a comprehensive report �
 
 ## Step 5 — Commit and stamp
 
-Use the dual-commit pattern to give the trove a reachable commit hash. See [spokes/linking-from-artifacts.md](spokes/linking-from-artifacts.md) for the full commit workflow and artifact linking procedure.
+Use the dual-commit pattern to give the trove a reachable commit hash. See [linking-from-artifacts.md](linking-from-artifacts.md) for the full commit workflow and artifact linking procedure.
 
 ## Step 6 — Report
 
