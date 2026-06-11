@@ -1,0 +1,38 @@
+trove-id: agent-skills-spec
+title: Agent Skills Open Standard
+description: The complete specification and best practices for the Agent Skills format
+topic: agent-skills-format
+collected: 2026-06-11
+sources:
+  - id: specification
+    title: Specification
+    url: https://agentskills.io/specification
+    type: web
+  - id: best-practices
+    title: Best practices
+    url: https://agentskills.io/skill-creation/best-practices
+    type: web
+  - id: quickstart
+    title: Quickstart
+    url: https://agentskills.io/skill-creation/quickstart
+    type: web
+  - id: using-scripts
+    title: Using scripts
+    url: https://agentskills.io/skill-creation/using-scripts
+    type: web
+  - id: evaluating-skills
+    title: Evaluating skills
+    url: https://agentskills.io/skill-creation/evaluating-skills
+    type: web
+  - id: optimizing-descriptions
+    title: Optimizing descriptions
+    url: https://agentskills.io/skill-creation/optimizing-descriptions
+    type: web
+  - id: client-implementation
+    title: Client implementation
+    url: https://agentskills.io/client-implementation/adding-skills-support
+    type: web
+  - id: home-overview
+    title: Home / Overview
+    url: https://agentskills.io/home
+    type: web
