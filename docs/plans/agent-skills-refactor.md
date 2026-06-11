@@ -6,50 +6,36 @@ The project root IS the skill. `npx skills` expects `skills/<name>/SKILL.md`.
 The spec says `name` must match parent directory name. Root-level SKILL.md with
 `name: swain-search` violates spec (parent dir is `swain-search-skill`).
 
-## Current trunk layout
+## Status — COMPLETED
 
-```
-swain-search-skill/
-├── SKILL.md            # Skill at root — wrong per spec/CLI
-├── spokes/             # 10 procedure docs (need to go under skill)
-├── references/         # 5 ref docs (manifest-schema, normalization-formats, etc.)
-├── scripts/            # Shell and Python scripts
-├── evals/              # Eval test suites
-├── docs/               # Project docs (adr, plans, musings, architecture, etc.)
-├── troves/             # Research troves
-├── AGENTS.md           # Project-level agent instructions
-├── PURPOSE.md          # Project purpose statement
-├── README.md, LICENSE, CHANGELOG.md
-├── ARCHITECTURE.md, UBIQUITOUS-LANGUAGE.md, TECH-STACK.md, DEVELOPER-WORKFLOWS.md, USER-EXPERIENCE.md
-├── .worktrees/, .githooks/, .gitignore
-└── markup/             # Empty directory
-```
-
-## Target layout
+The refactor is complete. The new layout:
 
 ```
 swain-search-skill/
 ├── skills/
-│   └── swain-search/           # <-- the actual skill (name matches parent dir)
-│       ├── SKILL.md            # Moved from root
-│       ├── references/         # spokes/ + references/ merged
-│       ├── scripts/            # Moved from root
-│       ├── evals/              # Moved from root
-│       └── assets/             # New (empty, .gitkeep)
-├── docs/                       # Project docs (hub files moved in too)
-│   ├── architecture/
-│   ├── ubiquitous-language/
-│   ├── tech-stack/
-│   ├── developer-workflows/
-│   ├── user-experience/
+│   └── swain-search/           # Skill (name matches parent dir)
+│       ├── SKILL.md            # Skill hub
+│       ├── references/         # Procedure docs (spokes + references merged)
+│       ├── scripts/            # Shell and Python scripts
+│       ├── evals/              # Eval test suites
+│       └── assets/             # Empty (assets/.gitkeep)
+├── docs/                       # Project docs (hub files moved in)
+│   ├── architecture/ARCHITECTURE.md
+│   ├── ubiquitous-language/UBIQUITOUS-LANGUAGE.md
+│   ├── tech-stack/TECH-STACK.md
+│   ├── developer-workflows/DEVELOPER-WORKFLOWS.md
+│   ├── user-experience/USER-EXPERIENCE.md
 │   ├── PURPOSE.md
+│   ├── plans/
+│   ├── adr/
+│   └── musings/
 ├── troves/
 ├── AGENTS.md
 ├── README.md, LICENSE, CHANGELOG.md
 └── .worktrees/, .githooks/, .gitignore
 ```
 
-After this, `npx skills add https://github.com/cristoslc/swain-search-skill --list`
+Now `npx skills add https://github.com/cristoslc/swain-search-skill --list`
 will discover `skills/swain-search/SKILL.md` with `name: swain-search`.
 
 ## Steps (execute in order)
@@ -103,7 +89,6 @@ touch skills/swain-search/assets/.gitkeep
 - Add `compatibility: Designed for opencode and Claude Code (or similar agent products)`
 - Fix `allowed-tools` to space-separated format (remove commas)
 - Update all relative links:
-  - `spokes/` → `references/` (for the moved spoke files)
   - `references/` → `references/` (already correct path-wise, verify)
   - Scripts path: `scripts/` → `scripts/` (relative to SKILL.md location, still `scripts/`)
   - `SKILL_DIR` convention: update to reference `skills/swain-search/`
@@ -114,8 +99,8 @@ Update references from `spokes/` → `references/` and adjust SKILL.md path.
 ### 8. Update .githooks/pre-commit
 Fix any `spokes/` references.
 
-### 9. Update internal spoke cross-references
-Read each file in `skills/swain-search/references/` and fix any `spokes/` links.
+### 9. Update internal spoke cross-references ✓  
+Already fixed — `spokes/` → bare filenames (sibling links, no prefix needed).
 
 ## Verification
 ```bash

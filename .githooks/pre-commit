@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # pre-commit — Run swain-search evals before commit
-# Triggers on changes to SKILL.md, spokes/, scripts/, references/
+# Triggers on changes to skills/swain-search/SKILL.md, skills/swain-search/references/, skills/swain-search/scripts/
 
-CHANGED=$(git diff --cached --name-only | grep -E '^(SKILL\.md|spokes/|scripts/|references/)' || true)
+CHANGED=$(git diff --cached --name-only | grep -E '^(skills/swain-search/SKILL\.md|skills/swain-search/references/|skills/swain-search/scripts/)' || true)
 if [ -z "$CHANGED" ]; then
     exit 0
 fi
@@ -25,7 +25,7 @@ done
 # Tier 2: Ollama evals (fast, ~30s total, ~$0)
 echo "--- Ollama evals ---"
 for suite in mode-detection trove-creation prior-art graceful-degradation adversarial; do
-    RESULTS=$(npx promptfoo@latest eval -c "evals/suites/$suite.yaml" --no-cache 2>&1)
+    RESULTS=$(npx promptfoo@latest eval -c "skills/swain-search/evals/suites/$suite.yaml" --no-cache 2>&1)
     if echo "$RESULTS" | grep -q "100%)"; then
         echo "  PASS: $suite"
     else

@@ -1,8 +1,8 @@
 # Source Collection
 
-For each source, use the appropriate capability. Read `references/normalization-formats.md` for the exact markdown structure per source type.
+For each source, use the appropriate capability. Read `normalization-formats.md` for the exact markdown structure per source type.
 
-Every source must be a verbatim reproduction of the original. See [spokes/verbatim-mandate.md](spokes/verbatim-mandate.md) for the full policy. For remote sources, also follow the [spokes/snapshot-evidence-gate.md](spokes/snapshot-evidence-gate.md) flow.
+Every source must be a verbatim reproduction of the original. See [verbatim-mandate.md](verbatim-mandate.md) for the full policy. For remote sources, also follow the [snapshot-evidence-gate.md](snapshot-evidence-gate.md) flow.
 
 ## Web search queries
 
@@ -66,11 +66,11 @@ After fetching a web page, check if a paywall proxy is available for the URL's d
 4. If no signals match: use the direct fetch content as-is (no proxy needed)
 5. If all proxies fail: keep the original truncated content, set `notes: "Paywalled; proxies exhausted — content from direct fetch only"`
 
-The registry lives at `references/paywall-proxies.yaml`. Add new domains or proxies there — no skill file changes needed.
+The registry lives at `paywall-proxies.yaml`. Add new domains or proxies there — no skill file changes needed.
 
 ## Video/audio URLs (YouTube, Instagram, podcasts)
 
-Follow the tiered chain below. Each tier writes `/tmp/swain_search_media_transcript.txt`. That file is then normalized per the media format in `references/normalization-formats.md`. The output goes to `sources/<source-id>/<source-id>.md`.
+Follow the tiered chain below. Each tier writes `/tmp/swain_search_media_transcript.txt`. That file is then normalized per the media format in `normalization-formats.md`. The output goes to `sources/<source-id>/<source-id>.md`.
 
 1. **Fetch subs and metadata** via a single yt-dlp call:
    ```bash
@@ -123,7 +123,7 @@ URL pattern: `(x|twitter|fxtwitter|fixupx).com/.+/status/\d+`. Unrolled via the 
 
 3. Derive the source ID as `<author_handle>-<first-few-title-words>`. Sanitize to lowercase, numbers, and hyphens only. Strip any `@`.
 
-4. Normalize per the x-thread format in `references/normalization-formats.md`:
+4. Normalize per the x-thread format in `normalization-formats.md`:
    - Frontmatter: add `author-handle`, `author-name`, `published-date`, and `tweet-count` to the common fields.
    - Body: render every post verbatim as a numbered list. Hyperlink each number back to its tweet URL. Strip leading auto-mention chains. These are the `@handle` prefixes X adds to replies. Hyperlink inline `@mentions` as `[@handle](https://x.com/handle)`. Hyperlink hashtags as `[#tag](https://x.com/hashtag/tag)`.
    - Cited posts: render each `cited_posts` entry as an indented blockquote under the citing post. Append up to 3 substantive self-replies as continuation. Skip bare-URL self-replies; they already appear in `external_links`. Link out if more than 3 self-replies exist.
@@ -207,4 +207,4 @@ Each normalized source gets a **slug-based source ID** and lives in a directory-
 - **Flat sources** (web, forum, media, document, local): `sources/<source-id>/<source-id>.md`
 - **Hierarchical sources** (repository, documentation-site): `sources/<source-id>/` with the original tree mirrored inside
 
-Derive the source ID as a slug from the source title or URL (e.g., `mdn-websocket-api`, `strangeloop-2025-realtime`). When a slug collides with an existing source ID: append `__word1-word2` using two random words from `references/wordlist.txt`. If the wordlist is missing, append `__` followed by 4 hex characters (e.g., `__a3f8`) as a fallback.
+Derive the source ID as a slug from the source title or URL (e.g., `mdn-websocket-api`, `strangeloop-2025-realtime`). When a slug collides with an existing source ID: append `__word1-word2` using two random words from `wordlist.txt`. If the wordlist is missing, append `__` followed by 4 hex characters (e.g., `__a3f8`) as a fallback.
