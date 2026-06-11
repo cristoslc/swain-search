@@ -64,8 +64,8 @@ mkdir -p skills/swain-search/assets
 ### 4. Move skill components into skills/swain-search/
 ```
 git mv SKILL.md skills/swain-search/SKILL.md
-git mv --all spokes/ skills/swain-search/references/
-git mv --all references/ skills/swain-search/references/  # merges into same dir
+git mv spokes/ skills/swain-search/references/
+git mv references/ skills/swain-search/references/  # merges into same dir
 git mv scripts/ skills/swain-search/scripts/
 git mv evals/ skills/swain-search/evals/
 ```
