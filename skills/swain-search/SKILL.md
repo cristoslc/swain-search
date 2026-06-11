@@ -18,7 +18,7 @@ Collect, normalize, and cache source materials into reusable troves that swain-d
 
 ## Script invocation convention
 
-Scripts live under the `scripts/` directory. Use the `<SKILL_DIR>` placeholder to mean the folder holding this SKILL.md. Resolve it at run time. In an installed skill, that is `.claude/skills/swain-search/`. In the standalone repo, it is the project root.
+Scripts live under the `scripts/` directory. Use the `<SKILL_DIR>` placeholder to mean the folder holding this SKILL.md. Resolve it at run time. In an installed skill, that is `.claude/skills/swain-search/`. In the standalone repo, it is `skills/swain-search/`.
 
 Run the bootstrap once per session before the media or X-thread flows:
 
