@@ -1,0 +1,22 @@
+trove-id: npx-skills-cli
+title: npx skills CLI — Open Agent Skills Tool
+description: The npx skills CLI for installing and managing agent skills across 70+ coding agents
+topic: npx-skills-cli
+collected: 2026-06-11
+sources:
+  - id: github-readme
+    title: GitHub README
+    url: https://github.com/vercel-labs/skills
+    type: web
+  - id: skills-sh
+    title: skills.sh website
+    url: https://skills.sh
+    type: web
+  - id: npm-package
+    title: npm package
+    url: https://www.npmjs.com/package/@vercel-labs/skills
+    type: web
+  - id: agent-skills-spec
+    title: Agent Skills Specification
+    url: https://agentskills.io/specification
+    type: web

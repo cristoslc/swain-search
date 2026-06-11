@@ -1,100 +1,125 @@
-# Refactor: agent-skills.io Standard Directory Structure
+# Refactor: agent-skills.io Standard Directory Structure (v2)
 
 ## Motivation
 
-This project predates the Agent Skills open standard. Its directory structure
-uses non-standard names (`spokes/`, `markup/`, `.agents/agents-md-detail/`,
-top-level hub files) that don't match the spec at
-https://agentskills.io/specification. This refactor aligns everything to the
-standard so the skill works in any agentskills-compatible client.
+The project root IS the skill. `npx skills` expects `skills/<name>/SKILL.md`.
+The spec says `name` must match parent directory name. Root-level SKILL.md with
+`name: swain-search` violates spec (parent dir is `swain-search-skill`).
 
-## Standard Layout (from agentskills.io spec)
+## Current trunk layout
 
 ```
-skill-name/
-├── SKILL.md           # Required: YAML frontmatter + Markdown instructions
-├── scripts/           # Optional: executable code
-├── references/        # Optional: on-demand documentation
-├── assets/            # Optional: templates, resources
-└── evals/             # Optional: eval test cases
+swain-search-skill/
+├── SKILL.md            # Skill at root — wrong per spec/CLI
+├── spokes/             # 10 procedure docs (need to go under skill)
+├── references/         # 5 ref docs (manifest-schema, normalization-formats, etc.)
+├── scripts/            # Shell and Python scripts
+├── evals/              # Eval test suites
+├── docs/               # Project docs (adr, plans, musings, architecture, etc.)
+├── troves/             # Research troves
+├── AGENTS.md           # Project-level agent instructions
+├── PURPOSE.md          # Project purpose statement
+├── README.md, LICENSE, CHANGELOG.md
+├── ARCHITECTURE.md, UBIQUITOUS-LANGUAGE.md, TECH-STACK.md, DEVELOPER-WORKFLOWS.md, USER-EXPERIENCE.md
+├── .worktrees/, .githooks/, .gitignore
+└── markup/             # Empty directory
 ```
 
-## Changes
+## Target layout
 
-### 1. SKILL.md frontmatter — remove non-standard fields
+```
+swain-search-skill/
+├── skills/
+│   └── swain-search/           # <-- the actual skill (name matches parent dir)
+│       ├── SKILL.md            # Moved from root
+│       ├── references/         # spokes/ + references/ merged
+│       ├── scripts/            # Moved from root
+│       ├── evals/              # Moved from root
+│       └── assets/             # New (empty, .gitkeep)
+├── docs/                       # Project docs (hub files moved in too)
+│   ├── architecture/
+│   ├── ubiquitous-language/
+│   ├── tech-stack/
+│   ├── developer-workflows/
+│   ├── user-experience/
+│   ├── PURPOSE.md
+├── troves/
+├── AGENTS.md
+├── README.md, LICENSE, CHANGELOG.md
+└── .worktrees/, .githooks/, .gitignore
+```
 
-Current frontmatter includes:
-- `user-invocable: true` (non-standard)
-- `allowed-tools: Bash, Read, Write, ...` (non-standard format — spec says
-  space-separated string; also not how the spec intends it)
+After this, `npx skills add https://github.com/cristoslc/swain-search-skill --list`
+will discover `skills/swain-search/SKILL.md` with `name: swain-search`.
 
-Remove `user-invocable`. Convert `allowed-tools` to spec-compliant format
-(space-separated tool name with optional qualifier). Add `compatibility`
-field indicating the skill is designed for opencode/Claude Code.
+## Steps (execute in order)
 
-### 2. Flatten `spokes/` into `references/`
+### 1. Remove `markup/` (empty)
+```
+git rm -r markup/
+```
 
-The `spokes/` directory contains reference procedure docs that are never
-loaded unless the agent follows a specific mode. In the spec, these are
-`references/` files. Move all content from `spokes/*.md` to `references/*.md`.
+### 2. Move hub files to `docs/` subdirs
+```
+git mv ARCHITECTURE.md docs/architecture/ARCHITECTURE.md
+git mv UBIQUITOUS-LANGUAGE.md docs/ubiquitous-language/UBIQUITOUS-LANGUAGE.md
+git mv TECH-STACK.md docs/tech-stack/TECH-STACK.md
+git mv DEVELOPER-WORKFLOWS.md docs/developer-workflows/DEVELOPER-WORKFLOWS.md
+git mv USER-EXPERIENCE.md docs/user-experience/USER-EXPERIENCE.md
+git mv PURPOSE.md docs/PURPOSE.md
+```
 
-Each spoke file that is referenced in SKILL.md must have its path updated
-in the SKILL.md links.
+### 3. Create skill directory structure
+```
+mkdir -p skills/swain-search
+mkdir -p skills/swain-search/assets
+```
 
-### 3. Update SKILL.md relative links
+### 4. Move skill components into skills/swain-search/
+```
+git mv SKILL.md skills/swain-search/SKILL.md
+git mv spokes/ skills/swain-search/references/
+git mv references/ skills/swain-search/references/  # merges into same dir
+git mv scripts/ skills/swain-search/scripts/
+git mv evals/ skills/swain-search/evals/
+```
 
-Every `spokes/` link in SKILL.md becomes `references/`.
+Handle any conflicts if `git mv references/` fails because references/ already exists
+under skills/swain-search/. If so, manually move files:
+```
+mkdir -p skills/swain-search/references
+git mv references/* skills/swain-search/references/
+git rmdir references/
+```
 
-### 4. Remove non-standard top-level files
+### 5. Create assets/.gitkeep
+```
+touch skills/swain-search/assets/.gitkeep
+```
 
-The spec doesn't define hub files. These project-docs files should move
-under `docs/`:
-- `ARCHITECTURE.md` → `docs/architecture/ARCHITECTURE.md`
-- `UBIQUITOUS-LANGUAGE.md` → `docs/ubiquitous-language/UBIQUITOUS-LANGUAGE.md`
-- `TECH-STACK.md` → `docs/tech-stack/TECH-STACK.md`
-- `DEVELOPER-WORKFLOWS.md` → `docs/developer-workflows/DEVELOPER-WORKFLOWS.md`
-- `USER-EXPERIENCE.md` → `docs/user-experience/USER-EXPERIENCE.md`
+### 6. Update SKILL.md
+- `name: swain-search` — keep (now matches `skills/swain-search/`)
+- Remove `user-invocable: true` if present
+- Add `compatibility: Designed for opencode and Claude Code (or similar agent products)`
+- Fix `allowed-tools` to space-separated format (remove commas)
+- Update all relative links:
+  - `spokes/` → `references/` (for the moved spoke files)
+  - `references/` → `references/` (already correct path-wise, verify)
+  - Scripts path: `scripts/` → `scripts/` (relative to SKILL.md location, still `scripts/`)
+  - `SKILL_DIR` convention: update to reference `skills/swain-search/`
 
-### 5. Move `PURPOSE.md` to `docs/`
+### 7. Update AGENTS.md
+Update references from `spokes/` → `references/` and adjust SKILL.md path.
 
-`PURPOSE.md` is project documentation, not a skill component. Move to `docs/`.
+### 8. Update .githooks/pre-commit
+Fix any `spokes/` references.
 
-### 6. Remove or move `.agents/agents-md-detail/`
+### 9. Update internal spoke cross-references
+Read each file in `skills/swain-search/references/` and fix any `spokes/` links.
 
-These are per-project agent instructions (the project-level AGENTS.md
-references them). The spec doesn't define a `.agents/` directory. These
-should move to a more conventional location or be removed.
-
-Since the AGENTS.md at project root references them, they either stay as a
-non-standard convenience or get absorbed into the skill. For now, keep them
-but they are outside the spec.
-
-### 7. Move `evals/` to standard location
-
-The `evals/` directory already exists — no change needed as it's recognized
-by the spec.
-
-### 8. Remove empty `markup/` directory
-
-Empty directories serve no purpose. Delete.
-
-## Non-goals
-
-- The `.worktrees/` directory is infrastructure, not part of the skill —
-  leave it.
-- The `.githooks/` directory is infrastructure — leave it.
-- `CHANGELOG.md`, `LICENSE`, `README.md` are project-level — leave at root.
-- `scripts/` already at root — no change needed (it's already a standard dir).
-- `.gitignore` — no change.
-- `AGENTS.md` — project-level agent instructions, leave at root.
-- `.agents/agents-md-detail/` — non-standard but left in place for
-  compatibility with the existing AGENTS.md.
-
-## Implementation Order
-
-1. Delete empty `markup/` directory
-2. Move top-level hub files to `docs/` subdirectories
-3. Move `PURPOSE.md` to `docs/`
-4. Rename `spokes/` to `references/` via git mv
-5. Update SKILL.md frontmatter (remove user-invocable, fix allowed-tools, add compatibility)
-6. Update all relative links in SKILL.md from `spokes/` to `references/`
+## Verification
+```bash
+# Test the CLI discovery:
+git push && npx skills add https://github.com/cristoslc/swain-search-skill --list
+# Should show: swain-search
+```
