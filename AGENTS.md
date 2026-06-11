@@ -1,31 +1,31 @@
 # swain-search Agent Guidance
 
-See `PURPOSE.md` for the project's intent.
+See `docs/PURPOSE.md` for the project's intent.
 
 ## Starting points
 
-- `SKILL.md` — Skill hub (frontmatter, mode table, core policies, links to spokes)
-- `spokes/` — Detailed procedure docs linked from SKILL.md
-- `scripts/` — Shell and Python scripts invoked by the skill
-- `references/normalization-formats.md` — Per-source-type markdown format specs
-- `references/manifest-schema.md` — Manifest YAML schema
+- `skills/swain-search/SKILL.md` — Skill hub (frontmatter, mode table, core policies, links to spokes)
+- `skills/swain-search/references/` — Detailed procedure docs linked from SKILL.md
+- `skills/swain-search/scripts/` — Shell and Python scripts invoked by the skill
+- `skills/swain-search/references/normalization-formats.md` — Per-source-type markdown format specs
+- `skills/swain-search/references/manifest-schema.md` — Manifest YAML schema
 
 ## SKILL.md hub-and-spoke architecture
 
-`SKILL.md` is the concise hub. It links to spoke files in `spokes/` for detailed procedures:
+`SKILL.md` is the concise hub. It links to spoke files in `skills/swain-search/references/` for detailed procedures:
 
 | Spoke | Purpose |
 |-------|---------|
-| `spokes/prior-art-check.md` | Scanning existing troves before creating new ones |
-| `spokes/verbatim-mandate.md` | Sources are evidence, not summaries |
-| `spokes/snapshot-evidence-gate.md` | SPEC-220 raw snapshot + verification flow |
-| `spokes/source-collection.md` | Per-source-type collection procedures (web, media, X-thread, CLI, etc.) |
-| `spokes/create-mode.md` | Create a new trove from scratch |
-| `spokes/extend-mode.md` | Add sources to an existing trove |
-| `spokes/refresh-mode.md` | Re-fetch stale sources |
-| `spokes/discover-mode.md` | Find existing troves by topic |
-| `spokes/capability-detection.md` | Tool availability checks and fallbacks |
-| `spokes/linking-from-artifacts.md` | Dual-commit pattern and `trove: <id>@<hash>` linking |
+| `skills/swain-search/references/prior-art-check.md` | Scanning existing troves before creating new ones |
+| `skills/swain-search/references/verbatim-mandate.md` | Sources are evidence, not summaries |
+| `skills/swain-search/references/snapshot-evidence-gate.md` | SPEC-220 raw snapshot + verification flow |
+| `skills/swain-search/references/source-collection.md` | Per-source-type collection procedures (web, media, X-thread, CLI, etc.) |
+| `skills/swain-search/references/create-mode.md` | Create a new trove from scratch |
+| `skills/swain-search/references/extend-mode.md` | Add sources to an existing trove |
+| `skills/swain-search/references/refresh-mode.md` | Re-fetch stale sources |
+| `skills/swain-search/references/discover-mode.md` | Find existing troves by topic |
+| `skills/swain-search/references/capability-detection.md` | Tool availability checks and fallbacks |
+| `skills/swain-search/references/linking-from-artifacts.md` | Dual-commit pattern and `trove: <id>@<hash>` linking |
 
 ## Key rules
 
@@ -36,11 +36,11 @@ See `PURPOSE.md` for the project's intent.
 
 ## Hubs and spokes
 
-- `ARCHITECTURE.md` → `docs/architecture/`
-- `UBIQUITOUS-LANGUAGE.md` → `docs/ubiquitous-language/`
-- `TECH-STACK.md` → `docs/tech-stack/`
-- `DEVELOPER-WORKFLOWS.md` → `docs/developer-workflows/`
-- `USER-EXPERIENCE.md` → `docs/user-experience/`
+- `docs/architecture/ARCHITECTURE.md`
+- `docs/ubiquitous-language/UBIQUITOUS-LANGUAGE.md`
+- `docs/tech-stack/TECH-STACK.md`
+- `docs/developer-workflows/DEVELOPER-WORKFLOWS.md`
+- `docs/user-experience/USER-EXPERIENCE.md`
 - `docs/adr/` — Architecture decision records
 - `docs/plans/` — Implementation plans
 - `docs/musings/` — Pre-artifact thought capture
