@@ -2,7 +2,7 @@
 
 For each source, use the appropriate capability. Read `references/normalization-formats.md` for the exact markdown structure per source type.
 
-Every source must be a verbatim reproduction of the original. See [spokes/verbatim-mandate.md](spokes/verbatim-mandate.md) for the full policy. For remote sources, also follow the [spokes/snapshot-evidence-gate.md](spokes/snapshot-evidence-gate.md) flow.
+Every source must be a verbatim reproduction of the original. See [references/verbatim-mandate.md](references/verbatim-mandate.md) for the full policy. For remote sources, also follow the [references/snapshot-evidence-gate.md](references/snapshot-evidence-gate.md) flow.
 
 ## Web search queries
 

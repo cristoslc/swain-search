@@ -13,14 +13,14 @@ Re-fetch stale sources and update changed content.
 4. Update `refreshed` date in manifest
 5. If any content changed, regenerate `synthesis.md`
 6. Append a `history` entry with `event: refreshed`, `sources-changed: M`, and `commit: "--"` placeholder
-7. Commit and stamp (same dual-commit pattern as [spokes/linking-from-artifacts.md](spokes/linking-from-artifacts.md)):
+7. Commit and stamp (same dual-commit pattern as [references/linking-from-artifacts.md](references/linking-from-artifacts.md)):
    - **Commit A**: `git commit -m "research(<trove-id>): refresh N sources (M changed)
 
 Co-Authored-By: <model-name-from-system-prompt> <noreply@unknown>"`
    - Capture `TROVE_HASH=$(git rev-parse HEAD)`
    - **Commit B**: back-fill hash in history entry, update referencing artifact(s) frontmatter — check `referenced-by` in manifest for all dependents
    - **Push** (mandatory): `git push origin trunk`
-   - Derive `SYNTHESIS_URL` (same method as [spokes/linking-from-artifacts.md](spokes/linking-from-artifacts.md))
+   - Derive `SYNTHESIS_URL` (same method as [references/linking-from-artifacts.md](references/linking-from-artifacts.md))
 8. Report: "Refreshed N sources. M had changed content, K were unchanged. New hash: `<TROVE_HASH:0:7>`. Synthesis: <SYNTHESIS_URL>"
 
 For sources with `freshness-ttl: never`, skip them during refresh.

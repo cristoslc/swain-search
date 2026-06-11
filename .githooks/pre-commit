@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # pre-commit — Run swain-search evals before commit
-# Triggers on changes to SKILL.md, spokes/, scripts/, references/
+# Triggers on changes to SKILL.md, references/, scripts/
 
-CHANGED=$(git diff --cached --name-only | grep -E '^(SKILL\.md|spokes/|scripts/|references/)' || true)
+CHANGED=$(git diff --cached --name-only | grep -E '^(SKILL\.md|references/|scripts/)' || true)
 if [ -z "$CHANGED" ]; then
     exit 0
 fi

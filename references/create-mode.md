@@ -19,9 +19,9 @@ If invoked from swain-design (e.g., spike entering Active), the artifact context
 
 ## Step 2 — Collect and normalize
 
-**Mandatory: every source must be a verbatim reproduction of the original document, not a summary.** The normalized source file is evidence — raw material for research. Condensing, paraphrasing, or extracting "key points" from the original is forbidden. Summarization belongs exclusively in `synthesis.md` (trove-level or per-source). See [spokes/verbatim-mandate.md](spokes/verbatim-mandate.md) for the full policy.
+**Mandatory: every source must be a verbatim reproduction of the original document, not a summary.** The normalized source file is evidence — raw material for research. Condensing, paraphrasing, or extracting "key points" from the original is forbidden. Summarization belongs exclusively in `synthesis.md` (trove-level or per-source). See [references/verbatim-mandate.md](references/verbatim-mandate.md) for the full policy.
 
-For each source, use the appropriate capability described in [spokes/source-collection.md](spokes/source-collection.md).
+For each source, use the appropriate capability described in [references/source-collection.md](references/source-collection.md).
 
 ## Step 3 — Generate manifest
 
@@ -56,7 +56,7 @@ Keep it concise. The synthesis is a starting point, not a comprehensive report �
 
 ## Step 5 — Commit and stamp
 
-Use the dual-commit pattern to give the trove a reachable commit hash. See [spokes/linking-from-artifacts.md](spokes/linking-from-artifacts.md) for the full commit workflow and artifact linking procedure.
+Use the dual-commit pattern to give the trove a reachable commit hash. See [references/linking-from-artifacts.md](references/linking-from-artifacts.md) for the full commit workflow and artifact linking procedure.
 
 ## Step 6 — Report
 
