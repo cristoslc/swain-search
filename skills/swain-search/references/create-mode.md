@@ -15,7 +15,7 @@ Ask the user (or infer from context) for:
    - Local file paths
 4. **Freshness TTL overrides** — optional, defaults are fine for most troves
 
-If invoked from swain-design (e.g., spike entering Active), the artifact context provides the topic, tags, and sometimes initial sources.
+If the caller has artifact context (e.g., from a spike or ADR), it can provide the topic, tags, and sometimes initial sources.
 
 ## Step 2 — Collect and normalize
 

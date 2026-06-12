@@ -1,6 +1,6 @@
 ---
 name: swain-search
-description: "Trove collection and normalization for swain-design artifacts. Collects sources from the web, local files, and media (video/audio), normalizes them to markdown, and caches them in reusable troves. Use when researching a topic for a spike, ADR, vision, or any artifact that needs structured research. Also use to refresh stale troves or extend existing ones with new sources. Triggers on: 'research X', 'gather sources for', 'compile research on', 'search for sources about', 'refresh the trove', 'find existing research on X', or when swain-design needs research inputs for a spike or ADR."
+description: "Trove collection and normalization. Collects sources from the web, local files, and media (video/audio), normalizes them to markdown, and caches them in reusable troves. Use when researching a topic for a spike, ADR, vision, or any artifact that needs structured research. Also use to refresh stale troves or extend existing ones with new sources. Triggers on: 'research X', 'gather sources for', 'compile research on', 'search for sources about', 'refresh the trove', 'find existing research on X', or when research inputs are needed for a spike or ADR."
 license: MIT
 compatibility: Designed for opencode and Claude Code (or similar agent products)
 allowed-tools: Bash Read Write Edit Glob Grep Skill WebSearch WebFetch AskUserQuestion
@@ -14,7 +14,7 @@ metadata:
 
 # swain-search
 
-Collect, normalize, and cache source materials into reusable troves that swain-design artifacts can reference.
+Collect, normalize, and cache source materials into reusable troves.
 
 ## Script invocation convention
 

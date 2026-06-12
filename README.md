@@ -1,6 +1,6 @@
 # swain-search
 
-Trove collection and normalization for swain-design artifacts. Collects sources from the web, local files, X/Twitter threads, and video/audio media, normalizes them to markdown, and caches them in reusable troves. See [SKILL.md](SKILL.md) for the full workflow.
+Trove collection and normalization. Collects sources from the web, local files, X/Twitter threads, and video/audio media, normalizes them to markdown, and caches them in reusable troves with provenance, freshness tracking, and thematic synthesis. See [SKILL.md](SKILL.md) for the full workflow.
 
 ## Requirements
 
@@ -94,7 +94,7 @@ On first run, the script scans your Claude Code settings files for overly broad 
 
 ## Usage
 
-The skill is invoked by swain-design during research-phase transitions (Spike Proposed → Active, ADR Proposed → Active, Vision/Epic creation) and directly by the operator for targeted collection:
+The skill is invoked directly by the operator for targeted collection:
 
 ```
 /swain-search research <topic>

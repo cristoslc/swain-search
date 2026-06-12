@@ -1,1 +1,1 @@
-Trove collection and normalization for swain-design artifacts. Collects sources from the web, local files, and media (video/audio), normalizes them to markdown, and caches them in reusable troves — structured research collections with provenance, freshness tracking, and thematic synthesis.
+Trove collection and normalization. Collects sources from the web, local files, and media (video/audio), normalizes them to markdown, and caches them in reusable troves — structured research collections with provenance, freshness tracking, and thematic synthesis.
