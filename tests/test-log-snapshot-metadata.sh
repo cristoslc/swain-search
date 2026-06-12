@@ -5,7 +5,7 @@ set +e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-LOG_SCRIPT="$ROOT_DIR/scripts/log-snapshot-metadata.sh"
+LOG_SCRIPT="$ROOT_DIR/skills/swain-search/scripts/log-snapshot-metadata.sh"
 
 PASS=0
 FAIL=0

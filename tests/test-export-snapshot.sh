@@ -7,9 +7,10 @@ set +e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-EXPORT_SCRIPT="$ROOT_DIR/scripts/export-snapshot.sh"
-LOG_SCRIPT="$ROOT_DIR/scripts/log-snapshot-metadata.sh"
-VERIFY_SCRIPT="$ROOT_DIR/scripts/verify-snapshot-evidence.sh"
+SCRIPTS_DIR="$ROOT_DIR/skills/swain-search/scripts"
+EXPORT_SCRIPT="$SCRIPTS_DIR/export-snapshot.sh"
+LOG_SCRIPT="$SCRIPTS_DIR/log-snapshot-metadata.sh"
+VERIFY_SCRIPT="$SCRIPTS_DIR/verify-snapshot-evidence.sh"
 
 PASS=0
 FAIL=0

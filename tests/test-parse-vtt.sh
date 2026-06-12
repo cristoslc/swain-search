@@ -5,7 +5,7 @@ set +e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-PARSE_SCRIPT="$ROOT_DIR/scripts/parse_vtt.py"
+PARSE_SCRIPT="$ROOT_DIR/skills/swain-search/scripts/parse_vtt.py"
 
 PASS=0
 FAIL=0
@@ -36,7 +36,8 @@ fi
 
 # AC2: Handles empty input gracefully
 echo "--- AC2: handles empty input ---"
-output=$(echo "" | uv run "$PARSE_SCRIPT" 2>&1)
+printf 'WEBVTT\n' > /tmp/swain_search_media.en.vtt
+output=$(uv run "$PARSE_SCRIPT" 2>&1)
 status=$?
 if [[ $status -eq 0 ]]; then
   pass "AC2: exits 0 on empty input"

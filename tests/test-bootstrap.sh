@@ -5,7 +5,8 @@ set +e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-BOOTSTRAP="$ROOT_DIR/scripts/bootstrap.sh"
+SKILL_DIR="${SKILL_DIR:-$HOME/.config/opencode/skills/swain-search}"
+BOOTSTRAP="$SKILL_DIR/scripts/bootstrap.sh"
 
 PASS=0
 FAIL=0

@@ -6,8 +6,8 @@
 set +e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-RESOLVE_PROXY="$(cd "$SCRIPT_DIR/.." && pwd)/scripts/resolve-proxy.sh"
-REGISTRY="$(cd "$SCRIPT_DIR/.." && pwd)/references/paywall-proxies.yaml"
+RESOLVE_PROXY="$(cd "$SCRIPT_DIR/.." && pwd)/skills/swain-search/scripts/resolve-proxy.sh"
+REGISTRY="$(cd "$SCRIPT_DIR/.." && pwd)/skills/swain-search/references/paywall-proxies.yaml"
 
 PASS=0
 FAIL=0
