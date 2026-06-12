@@ -8,7 +8,7 @@ Every source in a trove is normalized to a markdown file with YAML frontmatter. 
 
 The only acceptable formats for summarization are:
 - **Trove-level `synthesis.md`** — canonical thematic distillation across all sources.
-- **Per-source `synthesis.md`** — optional additive commentary beside the normalized source file.
+- **Per-source `summary.md`** — optional additive commentary beside the normalized source file.
 
 A source file that reads as a summary instead of a reproduction is defective and must be regenerated from the raw snapshot.
 
@@ -27,9 +27,9 @@ Required sequence:
 
 If step 4 fails, the source is unverified and must not be published into trove synthesis.
 
-## Per-source synthesis.md (optional)
+## Per-source summary.md (optional)
 
-Individual sources MAY include a `synthesis.md` alongside the normalized source file at `sources/<source-id>/synthesis.md`. This is additive commentary — it captures what the source says through the lens of the original search context, explains why the source was selected, or notes how it relates to the trove topic.
+Individual sources MAY include a `summary.md` alongside the normalized source file at `sources/<source-id>/summary.md`. This is additive commentary — it captures what the source says through the lens of the original search context, explains why the source was selected, or notes how it relates to the trove topic.
 
 ```yaml
 ---
@@ -48,7 +48,7 @@ gaps:
 ```
 
 Key rules:
-- Per-source synthesis.md is **optional** — only create it when there is useful commentary beyond what the verbatim source carries.
+- Per-source summary.md is **optional** — only create it when there is useful commentary beyond what the verbatim source carries.
 - It MUST NOT replace or truncate the full normalized source content. The verbatim source file remains the primary artifact.
 - The trove-level `synthesis.md` remains the authoritative distillation across all sources.
 - Format: YAML-like structured notes (not prose markdown). Use the frontmatter fields above as a pattern; add freeform notes below as needed.
@@ -252,7 +252,7 @@ transcript-source: vtt   # vtt | caption | vision-ocr | local-ocr
 Key rules:
 - Timestamps in `[MM:SS]` or `[HH:MM:SS]` format — only when `transcript-source: vtt`.
 - Speaker labels on every speaker change (or every few minutes for single-speaker).
-- Do NOT add a "Key Points" section — that is summarization, which is forbidden. Summarization belongs in `synthesis.md` only.
+- Do NOT add a "Key Points" section — that is summarization, which is forbidden. Summarization belongs in `synthesis.md` or `summary.md` only.
 - For podcasts with multiple speakers, clearly attribute each segment.
 - The `transcript-source` field records which tier produced the text. Omit `duration` and `speakers` when caption, vision-ocr, or local-ocr was used (those tiers do not recover that metadata).
 
