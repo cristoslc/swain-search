@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-06-11 — Independence from swain-design
+
+### Changed
+- **README.md** — removed "for swain-design artifacts" framing; self-contained description
+- **docs/PURPOSE.md** — same
+- **skills/swain-search/SKILL.md** — removed swain-design from frontmatter description and section header
+- **skills/swain-search/references/create-mode.md** — generalized "If invoked from swain-design" to "If the caller has artifact context"
+
+### Added
+- **docs/musings/independence-awakening.md** — analysis of all docs needing updates
+- **docs/plans/independence-stale-refs.md** — implementation plan
+
 ## 2026-05-07 — Cookie support
 
 ### Added
