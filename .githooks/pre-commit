@@ -19,7 +19,13 @@ for f in tests/test-*.sh; do
         # Skip deep behavioral tests in pre-commit (need API credits)
         continue
     fi
-    bash "$f" 2>&1 | tail -1
+    if bash "$f" > /dev/null 2>&1; then
+        echo "  PASS: $base"
+    else
+        FAILS=$((FAILS + 1))
+        echo "  FAIL: $base"
+        bash "$f" 2>&1 | tail -5
+    fi
 done
 
 # Tier 2: Ollama evals (fast, ~30s total, ~$0)
