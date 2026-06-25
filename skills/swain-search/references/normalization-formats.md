@@ -19,7 +19,7 @@ For remote documents (especially Google Docs/Drive links), normalization is not 
 Required sequence:
 1. Export/download raw file:
    - `bash scripts/export-snapshot.sh --url "<source-url>" --out-dir ".agents/search-snapshots/raw"`
-2. Normalize via `writing-skills` or `skill-creator` using the downloaded file path.
+2. Normalize HTML snapshots via `normalize-html.py` using the downloaded file path. For non-HTML exports (e.g. PDF, DOCX), use available document conversion capabilities.
 3. Log the evidence record:
    - `bash scripts/log-snapshot-metadata.sh --source-url "<source-url>" --export-mode "<mode>" --raw-path "<raw-path>" --normalized-path "<normalized-path>" --normalization-skill "<writing-skills|skill-creator>"`
 4. Verify source eligibility:
@@ -69,6 +69,53 @@ hash: "a1b2c3..."
 ```
 
 ## Web pages
+
+Convert raw HTML snapshots to markdown with `normalize-html.py`. The script uses `markdownify` for the body and adds YAML frontmatter from the HTML metadata.
+
+### HTML-to-markdown normalization contract
+
+- Input: a raw `.html` snapshot produced by `export-snapshot.sh`, `capture-playwright.py`, or any page-fetching tool.
+- Output: `sources/<source-id>/<source-id>.md` with YAML frontmatter and a verbatim markdown body.
+- Title extraction: `<title>` tag, falling back to the first `<h1>`.
+- Body conversion: `markdownify` in ATX heading style with bullet lists, stripping `<script>` and `<style>`.
+- Frontmatter includes the common fields plus a `hash` of the raw HTML bytes.
+
+### Common web frontmatter
+
+```yaml
+---
+source-id: "mdn-websocket-api"
+title: "WebSocket API - MDN Web Docs"
+type: web
+url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket"
+fetched: 2026-03-09T14:30:00Z
+hash: "a1b2c3..."
+---
+```
+
+### Playwright provenance extension
+
+When the raw snapshot was produced by browser rendering, `normalize-html.py` records the dynamic-capture provenance:
+
+```yaml
+---
+source-id: "dynamic-dashboard"
+title: "Realtime Dashboard"
+type: web
+url: "https://example.com/dashboard"
+fetched: 2026-06-25T14:30:00Z
+hash: "a1b2c3..."
+capture-engine: playwright
+rendered-at: 2026-06-25T14:30:05Z
+raw-snapshot: ".agents/search-snapshots/raw/dynamic-dashboard.html"
+screenshot: ".agents/search-snapshots/raw/dynamic-dashboard.png"
+final-url: "https://example.com/app"
+---
+```
+
+These keys are added automatically when `--capture-engine playwright` is passed. They are omitted for static fetches.
+
+### Body rules
 
 Strip navigation, ads, sidebars, footers, and cookie banners. Preserve the main content area with its heading structure.
 

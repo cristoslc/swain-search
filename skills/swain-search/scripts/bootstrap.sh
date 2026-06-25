@@ -24,6 +24,14 @@ if ! command -v uv >/dev/null 2>&1; then
   exit 1
 fi
 
+# Lightweight probe: is Playwright available in the environment?
+# Do NOT install the browser binary at bootstrap — that is large and may fail offline.
+if uv run --with playwright python3 -c "import playwright" >/dev/null 2>&1; then
+  echo "playwright: available"
+else
+  echo "playwright: not installed (dynamic captures require: uv run --with playwright python3 -m playwright install chromium)"
+fi
+
 # Stamp the marker so subsequent runs exit early
 mkdir -p "$(dirname "$MARKER")"
 touch "$MARKER"

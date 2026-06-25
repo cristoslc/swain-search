@@ -13,10 +13,51 @@ Every source must be a verbatim reproduction of the original. See [verbatim-mand
 
 ## Web page URLs
 
-1. Fetch the page using a browser or page-fetching capability
-2. Strip boilerplate (nav, ads, sidebars, cookie banners)
-3. Normalize to markdown per the web page format
-4. If fetch fails, record the URL in manifest with a `failed: true` flag and move on
+1. **Static fetch**: run `export-snapshot.sh` to download the raw HTML:
+   ```bash
+   bash "<SKILL_DIR>/scripts/export-snapshot.sh" \
+     --url "<source-url>" \
+     --out-dir ".agents/search-snapshots/raw"
+   ```
+   This writes a `.html` snapshot and prints a JSON object with `raw_path`.
+
+2. **Decide if the page needs a browser**: run `needs-browser.py` on the raw snapshot:
+   ```bash
+   uv run python3 "<SKILL_DIR>/scripts/needs-browser.py" \
+     --html "<raw-path>" \
+     --url "<source-url>"
+   ```
+   - Output is JSON with `needs-browser`, `reason`, and `confidence`.
+   - Empty skeletons, very low word counts, and JS app mount points return `true`.
+   - Static articles with a `<main>` / `<article>` and substantive text return `false`.
+   - For ambiguous pages, add `--llm-fallback` to ask an LLM (conservative default).
+
+3. **Dynamic capture (optional)**: if `needs-browser: true`, capture the rendered DOM and screenshot with Playwright:
+   ```bash
+   uv run --with playwright python3 "<SKILL_DIR>/scripts/capture-playwright.py" \
+     --url "<source-url>" \
+     --source-id "<source-id>" \
+     --out-dir ".agents/search-snapshots/raw"
+   ```
+   Playwright is an optional dependency; if it is missing, the script emits `failed: playwright-unavailable` and skips the source.
+   On first successful invocation it installs the Chromium browser if needed.
+   Outputs: `<source-id>.html` (rendered DOM) and `<source-id>.png` (full-page screenshot).
+
+4. **Normalize to markdown**: run `normalize-html.py` against the final raw HTML snapshot:
+   ```bash
+   uv run --with markdownify python3 "<SKILL_DIR>/scripts/normalize-html.py" \
+     --raw ".agents/search-snapshots/raw/<source-id>.html" \
+     --url "<source-url>" \
+     --out "sources/<source-id>/<source-id>.md" \
+     [--source-id "<source-id>"] \
+     [--final-url "<final-url>"] \
+     [--screenshot ".agents/search-snapshots/raw/<source-id>.png"] \
+     [--capture-engine playwright]
+   ```
+
+5. **If any step fails**, record the source in the manifest with `failed: true` and the failure reason (e.g. `failed: navigation-error`, `failed: playwright-unavailable`) and move on.
+
+For dynamic captures, `normalize-html.py` adds provenance keys to the frontmatter: `capture-engine: playwright`, `rendered-at`, `raw-snapshot`, `screenshot`, and `final-url` when applicable. See `normalization-formats.md` for the full HTML-to-markdown contract.
 
 ## Sites needing authentication (cookie support)
 
@@ -46,7 +87,7 @@ When a target site requires authentication or subscription access, supply browse
    - `bash "<SKILL_DIR>/scripts/export-snapshot.sh" --url "<source-url>" --out-dir ".agents/search-snapshots/raw"`
 2. Prefer API export modes (`google-doc-export`, `google-slides-export`, `google-drive-download`).
 3. If API export fails, use a browser helper fallback only when available.
-4. Normalize the exported file with `writing-skills` or `skill-creator`.
+4. Normalize the exported file with `normalize-html.py` (preferred) or with `writing-skills` / `skill-creator`.
 5. Log metadata in `.agents/search-snapshots/metadata.jsonl`.
 6. Verify with `verify-snapshot-evidence.sh` before including the source in trove outputs.
 
