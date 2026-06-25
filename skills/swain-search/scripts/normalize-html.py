@@ -42,6 +42,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--final-url", default=None, help="Final URL after any redirects or JS navigation.")
     parser.add_argument("--screenshot", default=None, help="Path to supporting screenshot evidence.")
     parser.add_argument("--capture-engine", default=None, help="Capture engine used to produce the raw snapshot (e.g. playwright).")
+    parser.add_argument("--rendered-at", dest="rendered_at", default=None, help="ISO timestamp when the browser rendered the page (for dynamic captures).")
     return parser.parse_args(argv)
 
 
@@ -84,6 +85,7 @@ def build_frontmatter(
     final_url: str | None,
     screenshot: str | None,
     capture_engine: str | None,
+    rendered_at: str | None,
 ) -> dict[str, object]:
     frontmatter: dict[str, object] = {
         "source-id": source_id,
@@ -96,7 +98,7 @@ def build_frontmatter(
 
     if capture_engine:
         frontmatter["capture-engine"] = capture_engine
-        frontmatter["rendered-at"] = fetched
+        frontmatter["rendered-at"] = rendered_at or fetched
         frontmatter["raw-snapshot"] = str(raw_path)
         if final_url:
             frontmatter["final-url"] = final_url
@@ -107,7 +109,12 @@ def build_frontmatter(
 
 
 def yaml_str(value: object) -> str:
-    """Very small JSON-safe YAML-ish dumper for frontmatter values."""
+    """Very small JSON-safe YAML-ish dumper for frontmatter values.
+
+    Uses JSON-string quoting for any value that is not a plain scalar, so
+    special characters (newlines, quotes, colons, leading digits) are handled
+    safely without needing a full YAML library for this limited schema.
+    """
     if value is None:
         return "null"
     if isinstance(value, bool):
@@ -117,10 +124,17 @@ def yaml_str(value: object) -> str:
     if isinstance(value, list):
         return json.dumps(value)
     text = str(value)
-    # Quote strings that look special in YAML.
     if not text:
         return '""'
-    if re.search(r"[:#{}\[\],>&*|!%@`]", text) or text in ("true", "false", "null", "yes", "no", "on", "off"):
+    # Plain scalars are safe only when they contain no YAML-special characters
+    # and do not look like booleans/null/numbers.
+    if (
+        re.search(r"[:#{}\[\],>&*|!%@`'\"\\\n\r\t]", text)
+        or text in ("true", "false", "null", "yes", "no", "on", "off")
+        or re.match(r"^[-+]?\d+(\.\d+)?$", text)
+        or re.match(r"^\s", text)
+        or re.match(r"\s$", text)
+    ):
         return json.dumps(text)
     return text
 
@@ -153,8 +167,10 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     fetched = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    rendered_at = args.rendered_at or fetched
     raw_hash = sha256_hex(raw_bytes)
-    title = extract_title(raw_bytes.decode("utf-8", errors="replace"))
+    html_text = raw_bytes.decode("utf-8", errors="replace")
+    title = extract_title(html_text)
     source_id = args.source_id or derive_source_id(args.url, title)
 
     frontmatter = build_frontmatter(
@@ -167,9 +183,10 @@ def main(argv: list[str] | None = None) -> int:
         final_url=args.final_url,
         screenshot=args.screenshot,
         capture_engine=args.capture_engine,
+        rendered_at=rendered_at,
     )
 
-    body = normalize(raw_bytes.decode("utf-8", errors="replace"))
+    body = normalize(html_text)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(dump_frontmatter(frontmatter) + "\n" + body + "\n", encoding="utf-8")

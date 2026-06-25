@@ -42,14 +42,9 @@ def ensure_playwright() -> None:
     except ImportError:
         pass
 
-    if shutil.which("playwright") is None:
-        print("failed: playwright-unavailable", file=sys.stderr)
-        print("Playwright is not installed. Run `uv run --with playwright python3 -m playwright install chromium` or add it to your environment.", file=sys.stderr)
-        sys.exit(1)
-
     try:
         subprocess.run(
-            ["playwright", "install", "chromium"],
+            [sys.executable, "-m", "playwright", "install", "chromium"],
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -76,6 +71,7 @@ def capture(url: str, source_id: str, out_dir: Path, timeout_ms: int) -> dict[st
     screenshot_path = out_dir / f"{source_id}.png"
     rendered_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+    browser = None
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
@@ -91,7 +87,6 @@ def capture(url: str, source_id: str, out_dir: Path, timeout_ms: int) -> dict[st
             rendered_html = page.content()
             raw_path.write_text(rendered_html, encoding="utf-8")
             page.screenshot(path=str(screenshot_path), full_page=True)
-            browser.close()
     except PlaywrightTimeoutError:
         print("failed: navigation-error", file=sys.stderr)
         print(f"Navigation timed out for {url}", file=sys.stderr)
@@ -100,6 +95,9 @@ def capture(url: str, source_id: str, out_dir: Path, timeout_ms: int) -> dict[st
         print("failed: navigation-error", file=sys.stderr)
         print(f"Playwright could not navigate {url}: {exc}", file=sys.stderr)
         sys.exit(1)
+    finally:
+        if browser:
+            browser.close()
 
     return {
         "source-id": source_id,

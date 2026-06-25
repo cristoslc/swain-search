@@ -30,7 +30,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--llm-fallback",
         action="store_true",
         default=False,
-        help="If heuristics are ambiguous, fall back to an LLM to decide. (Not implemented in this environment.)",
+        help="If heuristics are ambiguous, default to browser rendering. (LLM hook is not implemented; this flag is a conservative browser-on-ambiguous default.)",
     )
     parser.add_argument(
         "--word-threshold",
@@ -117,8 +117,12 @@ def llm_fallback_decide(html: str, url: str | None) -> tuple[bool, str]:
     The actual implementation would call an LLM with the HTML and URL. This
     placeholder returns the conservative answer: if we are still uncertain,
     assume the page needs a browser so we do not miss dynamic content.
+
+    The confidence returned to callers remains 'llm' so tooling can detect
+    that the placeholder path was taken; a real implementation will keep the
+    same contract.
     """
-    return True, "LLM fallback: ambiguous markup, defaulting to browser rendering"
+    return True, "LLM fallback: ambiguous markup, defaulting to browser rendering (LLM hook not implemented)"
 
 
 def main(argv: list[str] | None = None) -> int:
