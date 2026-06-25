@@ -121,7 +121,7 @@ fi
 
 download_ok=0
 if curl -fLsS --retry 3 --retry-all-errors --connect-timeout 10 \
-  --max-time 120 "${CURL_COOKIE_ARGS[@]}" "$export_url" -o "$raw_path"; then
+  --max-time 120 ${CURL_COOKIE_ARGS[@]+"${CURL_COOKIE_ARGS[@]}"} "$export_url" -o "$raw_path"; then
   download_ok=1
 fi
 
