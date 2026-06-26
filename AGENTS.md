@@ -44,3 +44,12 @@ See `docs/PURPOSE.md` for the project's intent.
 - `docs/adr/` — Architecture decision records
 - `docs/plans/` — Implementation plans
 - `docs/musings/` — Pre-artifact thought capture
+
+## Test command
+
+Run the test suite from `skills/swain-search/`:
+
+```bash
+cd skills/swain-search
+uv run --with pytest --with markdownify --with playwright --with beautifulsoup4 pytest
+```

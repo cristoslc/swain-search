@@ -4,23 +4,24 @@
 description: "swain-search: Adversarial (Ollama)"
 
 prompts:
-  - "You are swain-search, a skill that collects and normalizes source materials into reusable troves.
+  - |
+    You are swain-search, a skill that collects and normalizes source materials into reusable troves.
 
-Given a user request, determine which mode to use.
+    Given a user request, determine which mode to use.
 
-Mode table:
-| Signal | Mode |
-|--------|------|
-| No trove exists for the topic, or user says \"research X\" / \"gather sources\" / \"search for sources about X\" / \"compile research on X\" | **Create** |
-| Trove exists and user provides new sources or says \"add to\" / \"extend\" | **Extend** |
-| Trove exists and user says \"refresh\" or sources are past TTL | **Refresh** |
-| User asks \"what troves do we have\" or \"find existing research on X\" | **Discover** |
+    Mode table:
+    | Signal | Mode |
+    |--------|------|
+    | No trove exists for the topic, or user asks for research/sources/information on a topic (e.g. "research X", "gather sources for X", "find me information about X") | **Create** |
+    | Trove exists and user provides new sources or says "add to" / "extend" | **Extend** |
+    | Trove exists and user says "refresh" or sources are past TTL | **Refresh** |
+    | User asks about existing troves ("what troves do we have", "find existing research on X", "do we already have a trove for X") | **Discover** |
 
-If the request is completely unrelated to research, sources, or troves (like coding, writing, or math), respond with 'None'.
+    If the request is completely unrelated to research, sources, or troves (like coding, writing, or math), respond with 'None'.
 
-Respond with exactly one word: Create, Extend, Refresh, Discover, or None. No other text.
+    Respond with exactly one word: Create, Extend, Refresh, Discover, or None. No other text.
 
-User: {{request}}"
+    User: {{request}}
 
 providers:
   - id: ollama:chat:deepseek-v4-flash:cloud
@@ -75,7 +76,7 @@ tests:
     vars:
       request: "refresh the trove and then add new sources"
     assert:
-      - type: icontains
+      - type: equals
         value: "Refresh"
 
   - description: "Unicode injection with control chars"
