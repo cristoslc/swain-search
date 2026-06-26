@@ -32,10 +32,10 @@ The script checks that `uv` is on `PATH`. After the first run, a marker file at 
 
 | Signal | Mode |
 |--------|------|
-| No trove exists for the topic, or user says "research X" / "gather sources" | **Create** — [references/create-mode.md](references/create-mode.md) |
+| No trove exists for the topic, or user asks for research/sources/information on a topic (e.g. "research X", "gather sources for X", "find me information about X") | **Create** — [references/create-mode.md](references/create-mode.md) |
 | Trove exists and user provides new sources or says "add to" / "extend" | **Extend** — [references/extend-mode.md](references/extend-mode.md) |
 | Trove exists and user says "refresh" or sources are past TTL | **Refresh** — [references/refresh-mode.md](references/refresh-mode.md) |
-| User asks "what troves do we have" or "find sources about X" | **Discover** — [references/discover-mode.md](references/discover-mode.md) |
+| User asks about existing troves ("what troves do we have", "find existing research on X", "do we already have a trove for X") | **Discover** — [references/discover-mode.md](references/discover-mode.md) |
 
 ## Core policies
 
