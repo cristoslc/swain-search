@@ -65,6 +65,53 @@ def test_normalize_fixture():
         assert "![A diagram](https://example.com/diagram.png)" in content
 
 
+def test_rendered_at_provenance():
+    """rendered-at must equal the --rendered-at value, not normalization-time fetched."""
+    raw = FIXTURES / "sample-article.html"
+    rendered = "2024-01-15T09:30:00Z"
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp) / "output.md"
+        code, stdout, stderr = run_normalize([
+            "--raw", str(raw),
+            "--url", "https://example.com/sample-article",
+            "--out", str(out),
+            "--source-id", "sample-article",
+            "--capture-engine", "playwright",
+            "--rendered-at", rendered,
+        ])
+        assert code == 0, stderr
+
+        content = out.read_text(encoding="utf-8")
+        assert f'rendered-at: "{rendered}"' in content
+        # fetched is generated at runtime, so just ensure rendered-at is the user value
+        # and not an empty/quoted placeholder.
+        assert 'rendered-at: "2024-01-15T09:30:00Z"' in content
+
+
+def test_rendered_at_defaults_to_fetched_when_omitted():
+    """Without --rendered-at, rendered-at falls back to fetched."""
+    raw = FIXTURES / "sample-article.html"
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp) / "output.md"
+        code, stdout, stderr = run_normalize([
+            "--raw", str(raw),
+            "--url", "https://example.com/sample-article",
+            "--out", str(out),
+            "--source-id", "sample-article",
+            "--capture-engine", "playwright",
+        ])
+        assert code == 0, stderr
+
+        content = out.read_text(encoding="utf-8")
+        lines = [line for line in content.splitlines() if line.startswith("rendered-at:")]
+        assert len(lines) == 1
+        rendered_value = lines[0].split(":", 1)[1].strip().strip('"')
+        fetched_lines = [line for line in content.splitlines() if line.startswith("fetched:")]
+        assert len(fetched_lines) == 1
+        fetched_value = fetched_lines[0].split(":", 1)[1].strip().strip('"')
+        assert rendered_value == fetched_value
+
+
 def test_missing_raw_file():
     """Expected failure: normalize-html.py errors when the raw HTML file is missing."""
     with tempfile.TemporaryDirectory() as tmp:
