@@ -1,48 +1,34 @@
-trove-id: agent-skill-evals
+trove: agent-skill-evals
 created: 2026-06-09
-tags: [agent-evaluation, skill-testing, regression-testing, behavioral-testing, llm-evals, agent-quality]
+tags:
+- agent-evaluation
+- skill-testing
+- regression-testing
+- behavioral-testing
+- llm-evals
+- agent-quality
 freshness-ttl:
   web: P90D
 refreshed: 2026-06-09
 sources:
-  - id: anthropic-demystifying-evals
-    url: "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
-    title: "Demystifying Evals for AI Agents"
-    type: web
-    fetched: 2026-06-09
-    hash: 8a55e92e77d867a1f1c567b58632f2f689bb61b5301625d547262111ca9a9b39
-    proxy-used: null
-  - id: openai-eval-skills
-    url: "https://developers.openai.com/blog/eval-skills"
-    title: "Testing Agent Skills Systematically with Evals"
-    type: web
-    fetched: 2026-06-09
-    hash: 3cdbb9f07f4d1152e5710524e511c5b94c5e62d9b455f69763a994c19f072dda
-    proxy-used: null
-  - id: agentassay-paper
-    url: "https://arxiv.org/abs/2603.02601"
-    title: "AgentAssay: Token-Efficient Regression Testing for Non-Deterministic AI Agent Workflows"
-    type: web
-    fetched: 2026-06-09
-    hash: 831cb4eedb15a9a474954764b0f1bbaf612a07564cac8401458b85b1de58091c
-    proxy-used: null
-  - id: promptfoo-agent-skills
-    url: "https://www.promptfoo.dev/docs/guides/test-agent-skills/"
-    title: "Test Agent Skills"
-    type: web
-    fetched: 2026-06-09
-    hash: 5d2fd4c61f1eceaf31f6adb0f55426b62e4fb629398b217615e33e5765bf4416
-    proxy-used: null
-  - id: braintrust-ai-agent-eval
-    url: "https://www.braintrust.dev/articles/ai-agent-evaluation-framework"
-    title: "AI Agent Evaluation Framework"
-    type: web
-    fetched: 2026-06-09
-    hash: 29d8878caa1df21f5652e43ff45f621911123d1f7f70c65992a731a874d98b58
-    proxy-used: null
+- url: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+  fetched: 2026-06-09
+  slug: anthropic-demystifying-evals
+- url: https://developers.openai.com/blog/eval-skills
+  fetched: 2026-06-09
+  slug: openai-eval-skills
+- url: https://arxiv.org/abs/2603.02601
+  fetched: 2026-06-09
+  slug: agentassay-paper
+- url: https://www.promptfoo.dev/docs/guides/test-agent-skills/
+  fetched: 2026-06-09
+  slug: promptfoo-agent-skills
+- url: https://www.braintrust.dev/articles/ai-agent-evaluation-framework
+  fetched: 2026-06-09
+  slug: braintrust-ai-agent-eval
 history:
-  - event: created
-    date: 2026-06-09
-    commit: "82788d2"
-    sources: 5
+- event: created
+  date: 2026-06-09
+  commit: 82788d2
+  sources: 5
 referenced-by: []

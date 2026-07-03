@@ -6,10 +6,10 @@ Re-fetch stale sources and update changed content.
 2. For each source, check if `fetched` date + `freshness-ttl` has elapsed
 3. For stale sources:
    - Re-fetch the raw content
-   - Re-normalize to markdown
-   - Compute new content hash
-   - If hash changed: replace the source file, update manifest entry
-   - If hash unchanged: update only `fetched` date
+   - Re-normalize to markdown (output to `{slug}-snapshot.md`)
+   - Re-generate `{slug}-summary.md`
+   - If content changed: update the snapshot file, update `fetched` date
+   - If unchanged: update only `fetched` date
 4. Update `refreshed` date in manifest
 5. If any content changed, regenerate `synthesis.md`
 6. Append a `history` entry with `event: refreshed`, `sources-changed: M`, and `commit: "--"` placeholder

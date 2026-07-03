@@ -19,7 +19,7 @@ If the caller has artifact context (e.g., from a spike or ADR), it can provide t
 
 ## Step 2 — Collect and normalize
 
-**Mandatory: every source must be a verbatim reproduction of the original document, not a summary.** The normalized source file is evidence — raw material for research. Condensing, paraphrasing, or extracting "key points" from the original is forbidden. Summarization belongs exclusively in `synthesis.md` (trove-level) or `summary.md` (per-source). See [verbatim-mandate.md](verbatim-mandate.md) for the full policy.
+**Mandatory: every source must produce two files — a verbatim snapshot and a structured summary.** The snapshot (`{slug}-snapshot.md`) is a verbatim reproduction of the original document, not a summary. The summary (`{slug}-summary.md`) is structured commentary on what the source says, why it was selected, and what aspects it covers. See [verbatim-mandate.md](verbatim-mandate.md) for the full policy.
 
 For each source, use the appropriate capability described in [source-collection.md](source-collection.md).
 
@@ -27,24 +27,19 @@ For each source, use the appropriate capability described in [source-collection.
 
 Create `manifest.yaml` following the schema in `manifest-schema.md`. Include:
 - Trove metadata (id, created date, tags)
-- Default freshness TTL per source type
-- One entry per source with provenance (URL/path, fetch date, content hash, type)
+- One entry per source with slug, URL, and fetch date
 
-Compute content hashes as bare hex SHA-256 digests (no prefix) of the normalized markdown content:
-
-```bash
-shasum -a 256 sources/mdn-websocket-api/mdn-websocket-api.md | cut -d' ' -f1
-```
+The manifest is a minimal registry. All other metadata lives in the files' own frontmatter.
 
 ## Step 4 — Generate synthesis
 
 Create `synthesis.md` — a structured distillation of key findings across all sources.
 
-**Two levels of synthesis are permitted:**
+**Two levels of synthesis are required:**
 
 1. **Trove-level synthesis.md (required, authoritative).** The single `synthesis.md` at the trove root looks across ALL sources and produces a thematic distillation. This is the canonical summary of what the trove as a whole says.
 
-2. **Per-source summary.md (optional).** Individual sources MAY include their own `summary.md` alongside the normalized source file (e.g., `sources/<source-id>/summary.md`). These are useful for capturing what a source says through the lens of the original search context — e.g., commentary on why this source was selected, what aspect it illuminates, or how it relates to the trove topic. Per-source summary must NEVER replace or truncate the full normalized source content; the verbatim source file remains the primary artifact. Per-source summary is additive commentary, not a substitute for the original.
+2. **Per-source summary.md (required).** Every source MUST include its own `{slug}-summary.md` alongside the snapshot file (e.g., `sources/<slug>/<slug>-summary.md`). These capture what a source says through the lens of the original search context — e.g., commentary on why this source was selected, what aspect it illuminates, or how it relates to the trove topic. Per-source summary must NEVER replace or truncate the full snapshot content; the snapshot remains the primary artifact. Per-source summary is additive commentary, not a substitute for the original.
 
 Structure the trove-level synthesis by **theme**, not by source. Group related findings together, cite sources by ID, and surface:
 - **Key findings** — what the sources collectively say about the topic
@@ -65,7 +60,7 @@ Tell the user what was created:
 > **Trove `<trove-id>` created** with N sources — committed as `<TROVE_HASH:0:7>`.
 >
 > - `docs/troves/<trove-id>/manifest.yaml` — provenance and metadata
-> - `docs/troves/<trove-id>/sources/` — N normalized source files
+> - `docs/troves/<trove-id>/sources/` — N source directories, each with `{slug}-snapshot.md` and `{slug}-summary.md`
 > - `docs/troves/<trove-id>/synthesis.md` — thematic distillation: <SYNTHESIS_URL>
 >
 > Reference from artifacts with: `trove: <trove-id>@<TROVE_HASH:0:7>`

@@ -29,17 +29,21 @@ assert_trove_valid() {
     errors=$((errors + 1))
   fi
 
-  # Each source entry in manifest must have a corresponding file
+  # Each source entry in manifest must have snapshot and summary files
   if [ -f "$dir/manifest.yaml" ]; then
     python3 -c "
 import yaml, os, sys
 with open('$dir/manifest.yaml') as f:
     m = yaml.safe_load(f)
 for s in m.get('sources', []):
-    sid = s.get('id', s.get('source-id', ''))
-    spath = os.path.join('$dir', 'sources', sid, sid + '.md')
-    if not os.path.exists(spath):
-        print(f'FAIL: source file missing: {spath}')
+    sid = s.get('slug', s.get('id', s.get('source-id', '')))
+    snapshot = os.path.join('$dir', 'sources', sid, sid + '-snapshot.md')
+    summary = os.path.join('$dir', 'sources', sid, sid + '-summary.md')
+    if not os.path.exists(snapshot):
+        print(f'FAIL: snapshot file missing: {snapshot}')
+        sys.exit(1)
+    if not os.path.exists(summary):
+        print(f'FAIL: summary file missing: {summary}')
         sys.exit(1)
 " 2>/dev/null || errors=$((errors + 1))
   fi

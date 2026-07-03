@@ -1,19 +1,14 @@
-trove: test-fixture-trove
+trove: known-bad-summaries
 created: 2026-07-02
 refreshed: 2026-07-02
 tags:
   - test
   - fixture
-  - websocket
+  - known-bad
 sources:
   - slug: mdn-websocket
     url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket"
-    fetched: 2026-07-02T12:00:00Z
+    fetched: 2026-06-09T12:00:00Z
   - slug: whatwg-sse
     url: "https://html.spec.whatwg.org/multipage/server-sent-events.html"
-    fetched: 2026-07-02T12:00:00Z
-history:
-  - event: created
-    date: 2026-07-02
-    commit: abc1234
-    sources: 2
+    fetched: 2026-06-09T12:00:00Z

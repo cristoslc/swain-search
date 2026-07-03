@@ -3,7 +3,7 @@
 Add new sources to an existing trove.
 
 1. Read the existing `manifest.yaml`
-2. Collect and normalize new sources (same as [create-mode.md](create-mode.md) step 2)
+2. Collect and normalize new sources (same as [create-mode.md](create-mode.md) step 2) — each source produces both `{slug}-snapshot.md` and `{slug}-summary.md`
 3. Assign slug-based source IDs to new sources (following the same ID generation rules)
 4. Append new entries to `manifest.yaml`
 5. Update `refreshed` date

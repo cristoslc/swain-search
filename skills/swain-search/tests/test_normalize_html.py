@@ -38,14 +38,13 @@ def test_normalize_fixture():
         assert code == 0, stderr
 
         meta = json.loads(stdout)
-        assert meta["source-id"] == "sample-article"
+        assert meta["slug"] == "sample-article"
         assert meta["title"] == "Sample Article"
         assert meta["normalized-path"] == str(out)
-        assert "hash" in meta
 
         content = out.read_text(encoding="utf-8")
         assert content.startswith("---\n")
-        assert "source-id: sample-article" in content
+        assert "slug: sample-article" in content
         assert 'title: "Sample Article"' in content or 'title: Sample Article' in content
         assert "type: web" in content
         assert 'url: "https://example.com/sample-article"' in content

@@ -203,14 +203,14 @@ for src in sources:
     # Check source directory/file exists (skip if selective)
     if not selective:
         source_path = os.path.join(sources_dir, source_id)
+        snapshot_file = os.path.join(source_path, f"{source_id}-snapshot.md")
+        summary_file = os.path.join(source_path, f"{source_id}-summary.md")
         if os.path.isdir(source_path):
-            # Hierarchical source — check directory is non-empty
-            if not os.listdir(source_path):
-                print(f"MISSING_FILE {trove_id}: source directory {source_id}/ exists but is empty")
-        elif os.path.isfile(os.path.join(source_path, source_id + ".md")):
-            # Flat source — file exists inside its directory (should not reach here if dir doesn't exist)
-            pass
-        elif not os.path.isdir(source_path):
+            if not os.path.isfile(snapshot_file):
+                print(f"MISSING_SNAPSHOT {trove_id}: {source_id}/ has no {source_id}-snapshot.md")
+            if not os.path.isfile(summary_file):
+                print(f"MISSING_SUMMARY {trove_id}: {source_id}/ has no {source_id}-summary.md")
+        else:
             print(f"MISSING_FILE {trove_id}: manifest has {source_id} but directory not found")
 
 # Check for orphaned directories in sources/

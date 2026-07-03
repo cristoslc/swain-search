@@ -2,7 +2,7 @@
 
 For each source, use the appropriate capability. Read `normalization-formats.md` for the exact markdown structure per source type.
 
-Every source must be a verbatim reproduction of the original. See [verbatim-mandate.md](verbatim-mandate.md) for the full policy. For remote sources, also follow the [snapshot-evidence-gate.md](snapshot-evidence-gate.md) flow.
+Every source must produce two files: a verbatim snapshot (`{slug}-snapshot.md`) and a structured summary (`{slug}-summary.md`). See [verbatim-mandate.md](verbatim-mandate.md) for the full policy. For remote sources, also follow the [snapshot-evidence-gate.md](snapshot-evidence-gate.md) flow.
 
 ## Web search queries
 
@@ -44,17 +44,17 @@ Every source must be a verbatim reproduction of the original. See [verbatim-mand
    Outputs: `<source-id>.html` (rendered DOM) and `<source-id>.png` (full-page screenshot).
 
 4. **Normalize to markdown**: run `normalize-html.py` against the final raw HTML snapshot:
-   ```bash
-   uv run --with markdownify python3 "<SKILL_DIR>/scripts/normalize-html.py" \
-     --raw ".agents/search-snapshots/raw/<source-id>.html" \
-     --url "<source-url>" \
-     --out "sources/<source-id>/<source-id>.md" \
-     [--source-id "<source-id>"] \
-     [--final-url "<final-url>"] \
-     [--screenshot ".agents/search-snapshots/raw/<source-id>.png"] \
-     [--capture-engine playwright] \
-     [--rendered-at "<rendered-at>"]
-   ```
+    ```bash
+    uv run --with markdownify python3 "<SKILL_DIR>/scripts/normalize-html.py" \
+      --raw ".agents/search-snapshots/raw/<source-id>.html" \
+      --url "<source-url>" \
+      --out "sources/<source-id>/<source-id>-snapshot.md" \
+      [--source-id "<source-id>"] \
+      [--final-url "<final-url>"] \
+      [--screenshot ".agents/search-snapshots/raw/<source-id>.png"] \
+      [--capture-engine playwright] \
+      [--rendered-at "<rendered-at>"]
+    ```
    For dynamic captures, pass `--rendered-at` from `capture-playwright.py`'s JSON output so the provenance timestamp reflects the actual browser render time, not the normalization time.
 
 5. **If any step fails**, record the source in the manifest with `failed: true` and the failure reason (e.g. `failed: navigation-error`, `failed: playwright-unavailable`) and move on.
@@ -113,7 +113,7 @@ The registry lives at `paywall-proxies.yaml`. Add new domains or proxies there â
 
 ## Video/audio URLs (YouTube, Instagram, podcasts)
 
-Follow the tiered chain below. Each tier writes `/tmp/swain_search_media_transcript.txt`. That file is then normalized per the media format in `normalization-formats.md`. The output goes to `sources/<source-id>/<source-id>.md`.
+Follow the tiered chain below. Each tier writes `/tmp/swain_search_media_transcript.txt`. That file is then normalized per the media format in `normalization-formats.md`. The output goes to `sources/<source-id>/<source-id>-snapshot.md`.
 
 1. **Fetch subs and metadata** via a single yt-dlp call:
    ```bash
@@ -148,7 +148,7 @@ Follow the tiered chain below. Each tier writes `/tmp/swain_search_media_transcr
    ```
    Set `transcript-source: local-ocr`. No timestamps.
 
-7. **Normalize and write the source**. Derive the source ID slug from the video title. Use lowercase, numbers, and hyphens only. Write `sources/<source-id>/<source-id>.md` per the media format. Add `transcript-source` to the frontmatter. Add `duration`, `speakers`, and YouTube deep-links only when step 2 ran.
+7. **Normalize and write the source**. Derive the source ID slug from the video title. Use lowercase, numbers, and hyphens only. Write `sources/<source-id>/<source-id>-snapshot.md` per the media format. Add `transcript-source` to the frontmatter. Add `duration`, `speakers`, and YouTube deep-links only when step 2 ran.
 
 If no tier succeeds, record the source in the manifest with `failed: true` and `reason: <tier>`.
 
@@ -171,7 +171,7 @@ URL pattern: `(x|twitter|fxtwitter|fixupx).com/.+/status/\d+`. Unrolled via the 
    - Body: render every post verbatim as a numbered list. Hyperlink each number back to its tweet URL. Strip leading auto-mention chains. These are the `@handle` prefixes X adds to replies. Hyperlink inline `@mentions` as `[@handle](https://x.com/handle)`. Hyperlink hashtags as `[#tag](https://x.com/hashtag/tag)`.
    - Cited posts: render each `cited_posts` entry as an indented blockquote under the citing post. Append up to 3 substantive self-replies as continuation. Skip bare-URL self-replies; they already appear in `external_links`. Link out if more than 3 self-replies exist.
 
-5. Save to `sources/<source-id>/<source-id>.md`.
+5. Save to `sources/<source-id>/<source-id>-snapshot.md`.
 
 ## Local files
 
@@ -240,14 +240,14 @@ If the target is a CLI tool, run the capture sequence:
    - All captures fail? Mark as `failed: true` and continue
 
 Each capture becomes a separate source:
-- `sources/<tool>-manpage/<tool>-manpage.md` (type: `cli-manpage`)
-- `sources/<tool>-help/<tool>-help.md` (type: `cli-help`)
-- `sources/<tool>-<subcommand>-help/<tool>-<subcommand>-help.md` (type: `cli-subcommand-help`)
+- `sources/<tool>-manpage/<tool>-manpage-snapshot.md` (type: `cli-manpage`)
+- `sources/<tool>-help/<tool>-help-snapshot.md` (type: `cli-help`)
+- `sources/<tool>-<subcommand>-help/<tool>-<subcommand>-help-snapshot.md` (type: `cli-subcommand-help`)
 
 ## Source ID generation
 
 Each normalized source gets a **slug-based source ID** and lives in a directory-per-source layout:
-- **Flat sources** (web, forum, media, document, local): `sources/<source-id>/<source-id>.md`
+- **Flat sources** (web, forum, media, document, local): `sources/<source-id>/<source-id>-snapshot.md` and `sources/<source-id>/<source-id>-summary.md`
 - **Hierarchical sources** (repository, documentation-site): `sources/<source-id>/` with the original tree mirrored inside
 
 Derive the source ID as a slug from the source title or URL (e.g., `mdn-websocket-api`, `strangeloop-2025-realtime`). When a slug collides with an existing source ID: append `__word1-word2` using two random words from `wordlist.txt`. If the wordlist is missing, append `__` followed by 4 hex characters (e.g., `__a3f8`) as a fallback.

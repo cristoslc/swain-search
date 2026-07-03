@@ -1,0 +1,75 @@
+# Master Test Coverage Matrix — swain-search
+# See ~/.agents/agents-md-detail/test-driven-design.md for schema.
+
+workflow_paths:
+  - path: "Create mode: collect web page"
+    blast_radius: low  # read-only, no data mutation
+    coverage:
+      happy: automated    # test_e2e.py (full pipeline)
+      sad: automated      # test_e2e.py (broken URL)
+      edge: automated      # test_compliance.py (known-bad summary detection)
+      corner: skip         # low blast radius
+
+  - path: "Create mode: normalize HTML to snapshot"
+    blast_radius: low
+    coverage:
+      happy: automated    # test_normalize_html.py
+      sad: automated     # test_normalize_html.py (missing raw file)
+      edge: automated     # test_normalize_html.py (rendered-at provenance)
+      corner: skip
+
+  - path: "Create mode: produce snapshot + summary per source"
+    blast_radius: low
+    coverage:
+      happy: automated    # test_compliance.py (both files exist, frontmatter, size)
+      sad: automated      # test_compliance.py (broken URL → no files)
+      edge: automated     # test_compliance.py (known-bad → flagged as summary)
+      corner: skip
+
+  - path: "Create mode: browser detection"
+    blast_radius: low
+    coverage:
+      happy: automated    # test_needs_browser.py (static article)
+      sad: automated      # test_needs_browser.py (empty skeleton)
+      edge: automated     # test_needs_browser.py (missing input)
+      corner: skip
+
+  - path: "Create mode: Playwright degradation"
+    blast_radius: low
+    coverage:
+      happy: automated    # test_playwright_degradation.py
+      sad: skip            # playwright-unavailable is the sad path
+      edge: skip
+      corner: skip
+
+  - path: "Extend mode: add sources to existing trove"
+    blast_radius: low
+    coverage:
+      happy: manual        # operator-assisted (needs existing trove)
+      sad: skip
+      edge: skip
+      corner: skip
+
+  - path: "Refresh mode: re-fetch stale sources"
+    blast_radius: low
+    coverage:
+      happy: manual        # operator-assisted (needs stale trove)
+      sad: skip
+      edge: skip
+      corner: skip
+
+  - path: "Discover mode: find existing troves"
+    blast_radius: low
+    coverage:
+      happy: manual        # operator-assisted (needs trove index)
+      sad: skip
+      edge: skip
+      corner: skip
+
+  - path: "Dual-commit pattern"
+    blast_radius: low
+    coverage:
+      happy: manual        # operator-assisted (needs git)
+      sad: skip
+      edge: skip
+      corner: skip

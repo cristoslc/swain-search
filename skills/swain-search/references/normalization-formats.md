@@ -1,25 +1,32 @@
 # Normalization Formats
 
-Every source in a trove is normalized to a markdown file with YAML frontmatter. The frontmatter schema is consistent across types; the body structure varies by source type.
+Every source in a trove produces two markdown files with YAML frontmatter: a verbatim snapshot and a summary. The frontmatter schema is consistent across types; the body structure varies by source type.
 
-## Verbatim mandate: sources are evidence, not summaries
+## Two-file convention
 
-**A normalized source file MUST be a faithful, verbatim reproduction of the original document.** Condensing, paraphrasing, extracting "key points", or rewriting the original into an AI-generated summary is strictly forbidden. The normalized file must preserve the full content of the original — no truncation, no condensation, no AI rewrites.
+Each source directory contains exactly two files:
 
-The only acceptable formats for summarization are:
-- **Trove-level `synthesis.md`** — canonical thematic distillation across all sources.
-- **Per-source `summary.md`** — optional additive commentary beside the normalized source file.
+| File | Required | Content |
+|------|----------|---------|
+| `{slug}-snapshot.md` | Yes | Verbatim reproduction of the original — evidence |
+| `{slug}-summary.md` | Yes | Structured commentary — what the source says, why selected, aspects covered |
 
-A source file that reads as a summary instead of a reproduction is defective and must be regenerated from the raw snapshot.
+The manifest is a minimal registry (slug, url, fetched). All metadata lives in the files' own frontmatter.
+
+## Verbatim mandate: snapshots are evidence, not summaries
+
+**A snapshot file MUST be a faithful, verbatim reproduction of the original document.** Condensing, paraphrasing, extracting "key points", or rewriting the original into an AI-generated summary is strictly forbidden. The snapshot must preserve the full content of the original — no truncation, no condensation, no AI rewrites.
+
+Summarization belongs exclusively in `{slug}-summary.md` (per-source) and `synthesis.md` (trove-level). A snapshot file that reads as a summary is defective and must be regenerated from the raw snapshot.
 
 ## Snapshot-first normalization contract (SPEC-220)
 
-For remote documents (especially Google Docs/Drive links), normalization is not allowed until a raw snapshot is exported first.
+For remote documents, normalization is not allowed until a raw snapshot is exported first.
 
 Required sequence:
 1. Export/download raw file:
    - `bash scripts/export-snapshot.sh --url "<source-url>" --out-dir ".agents/search-snapshots/raw"`
-2. Normalize HTML snapshots via `normalize-html.py` using the downloaded file path. For non-HTML exports (e.g. PDF, DOCX), use available document conversion capabilities.
+2. Normalize HTML snapshots via `normalize-html.py` using the downloaded file path. Output goes to `sources/<slug>/<slug>-snapshot.md`. For non-HTML exports (e.g. PDF, DOCX), use available document conversion capabilities.
 3. Log the evidence record:
    - `bash scripts/log-snapshot-metadata.sh --source-url "<source-url>" --export-mode "<mode>" --raw-path "<raw-path>" --normalized-path "<normalized-path>" --normalization-skill "<writing-skills|skill-creator>"`
 4. Verify source eligibility:
@@ -27,13 +34,13 @@ Required sequence:
 
 If step 4 fails, the source is unverified and must not be published into trove synthesis.
 
-## Per-source summary.md (optional)
+## Per-source summary.md (required)
 
-Individual sources MAY include a `summary.md` alongside the normalized source file at `sources/<source-id>/summary.md`. This is additive commentary — it captures what the source says through the lens of the original search context, explains why the source was selected, or notes how it relates to the trove topic.
+Every source MUST include a `{slug}-summary.md` alongside the snapshot at `sources/<slug>/<slug>-summary.md`. This is structured commentary — it captures what the source says through the lens of the original search context, explains why the source was selected, or notes how it relates to the trove topic.
 
 ```yaml
 ---
-source-id: "mdn-websocket-api"
+slug: "mdn-websocket-api"
 relates-to: "web-socket-vs-sse"
 relevance: "Official specification — defines WebSocket protocol semantics"
 selected-because: "Authoritative reference for the protocol comparison"
@@ -48,23 +55,22 @@ gaps:
 ```
 
 Key rules:
-- Per-source summary.md is **optional** — only create it when there is useful commentary beyond what the verbatim source carries.
-- It MUST NOT replace or truncate the full normalized source content. The verbatim source file remains the primary artifact.
+- Per-source summary is **required** — every source gets one.
+- It MUST NOT replace or truncate the full snapshot content. The snapshot remains the primary artifact.
 - The trove-level `synthesis.md` remains the authoritative distillation across all sources.
 - Format: YAML-like structured notes (not prose markdown). Use the frontmatter fields above as a pattern; add freeform notes below as needed.
 
 ## Common frontmatter
 
-All normalized source files share this frontmatter:
+All snapshot files share this frontmatter:
 
 ```yaml
 ---
-source-id: "mdn-websocket-api"
+slug: "mdn-websocket-api"
 title: "Source Title"
 type: web | forum | document | media | local | repository | documentation-site | x-thread
 url: "https://..."           # or path for local sources
 fetched: 2026-03-09T14:30:00Z
-hash: "a1b2c3..."
 ---
 ```
 
@@ -75,21 +81,19 @@ Convert raw HTML snapshots to markdown with `normalize-html.py`. The script uses
 ### HTML-to-markdown normalization contract
 
 - Input: a raw `.html` snapshot produced by `export-snapshot.sh`, `capture-playwright.py`, or any page-fetching tool.
-- Output: `sources/<source-id>/<source-id>.md` with YAML frontmatter and a verbatim markdown body.
+- Output: `sources/<slug>/<slug>-snapshot.md` with YAML frontmatter and a verbatim markdown body.
 - Title extraction: `<title>` tag, falling back to the first `<h1>`.
 - Body conversion: `markdownify` in ATX heading style with bullet lists, stripping `<script>` and `<style>`.
-- Frontmatter includes the common fields plus a `hash` of the raw HTML bytes.
 
 ### Common web frontmatter
 
 ```yaml
 ---
-source-id: "mdn-websocket-api"
+slug: "mdn-websocket-api"
 title: "WebSocket API - MDN Web Docs"
 type: web
 url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket"
 fetched: 2026-03-09T14:30:00Z
-hash: "a1b2c3..."
 ---
 ```
 
@@ -99,12 +103,11 @@ When the raw snapshot was produced by browser rendering, `normalize-html.py` rec
 
 ```yaml
 ---
-source-id: "dynamic-dashboard"
+slug: "mdn-websocket-api"
 title: "Realtime Dashboard"
 type: web
 url: "https://example.com/dashboard"
 fetched: 2026-06-25T14:30:00Z
-hash: "a1b2c3..."
 capture-engine: playwright
 rendered-at: 2026-06-25T14:30:05Z
 raw-snapshot: ".agents/search-snapshots/raw/dynamic-dashboard.html"
@@ -121,12 +124,11 @@ Strip navigation, ads, sidebars, footers, and cookie banners. Preserve the main 
 
 ```markdown
 ---
-source-id: "mdn-websocket-api"
+slug: "mdn-websocket-api"
 title: "WebSocket API - MDN Web Docs"
 type: web
 url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket"
 fetched: 2026-03-09T14:30:00Z
-hash: "a1b2c3..."
 ---
 
 # WebSocket API - MDN Web Docs
@@ -152,12 +154,11 @@ Preserve chronological structure with author attribution and timestamps.
 
 ```markdown
 ---
-source-id: "hn-websocket-vs-sse-dashboards"
+slug: "hn-websocket-vs-sse-dashboards"
 title: "WebSocket vs SSE for real-time dashboards"
 type: forum
 url: "https://news.ycombinator.com/item?id=12345"
 fetched: 2026-03-09T14:35:00Z
-hash: "d4e5f6..."
 participants:
   - "user_alpha"
   - "user_beta"
@@ -195,12 +196,11 @@ X threads are a source type of their own. Each one has an author, a post count, 
 
 ```markdown
 ---
-source-id: "schlickw-us-foreign-policy-anthropic-mythos"
+slug: "schlickw-us-foreign-policy-anthropic-mythos"
 title: "US Foreign Policy and the Anthropic Mythos"
 type: x-thread
 url: "https://x.com/schlickw/status/1234567890"
 fetched: 2026-04-13T14:30:00Z
-hash: "k1l2m3..."
 author-handle: "schlickw"
 author-name: "Example Author"
 author-url: "https://x.com/schlickw"
@@ -239,12 +239,11 @@ Convert to markdown preserving structure. Use available document conversion capa
 
 ```markdown
 ---
-source-id: "q4-2025-arch-review"
+slug: "q4-2025-arch-review"
 title: "Q4 2025 Architecture Review"
 type: document
 path: "docs/reviews/q4-2025-arch-review.pdf"
 fetched: 2026-03-09T15:00:00Z
-hash: "g7h8i9..."
 page-count: 12
 ---
 
@@ -270,12 +269,11 @@ Transcribe with timestamps and speaker labels when available.
 
 ```markdown
 ---
-source-id: "strangeloop-2025-realtime-patterns"
+slug: "strangeloop-2025-realtime-patterns"
 title: "Real-time Web Patterns - StrangeLoop 2025"
 type: media
 url: "https://youtube.com/watch?v=xyz"
 fetched: 2026-03-09T15:30:00Z
-hash: "j0k1l2..."
 duration: "42:15"
 speakers:
   - "Jamie Zawinski"
@@ -299,7 +297,7 @@ transcript-source: vtt   # vtt | caption | vision-ocr | local-ocr
 Key rules:
 - Timestamps in `[MM:SS]` or `[HH:MM:SS]` format — only when `transcript-source: vtt`.
 - Speaker labels on every speaker change (or every few minutes for single-speaker).
-- Do NOT add a "Key Points" section — that is summarization, which is forbidden. Summarization belongs in `synthesis.md` or `summary.md` only.
+- Do NOT add a "Key Points" section — that is summarization, which belongs in `{slug}-summary.md` or `synthesis.md` only.
 - For podcasts with multiple speakers, clearly attribute each segment.
 - The `transcript-source` field records which tier produced the text. Omit `duration` and `speakers` when caption, vision-ocr, or local-ocr was used (those tiers do not recover that metadata).
 
@@ -309,12 +307,11 @@ Minimal transformation — add frontmatter, verify structure.
 
 ```markdown
 ---
-source-id: "internal-api-design-notes"
+slug: "internal-api-design-notes"
 title: "Internal API Design Notes"
 type: local
 path: "docs/notes/api-design.md"
 fetched: 2026-03-09T16:00:00Z
-hash: "m3n4o5..."
 ---
 
 [Original file content, unchanged]
@@ -323,7 +320,6 @@ hash: "m3n4o5..."
 Key rules:
 - Add frontmatter if missing
 - Do not modify the content body
-- Hash is computed on the original content (for change detection)
 
 ## Repositories
 
@@ -331,7 +327,7 @@ Mirror the repository tree structure under the source directory. Preserve direct
 
 ```
 sources/express-framework/
-  express-framework.md          # Summary/index file with frontmatter
+  express-framework-snapshot.md    # Index file with frontmatter
   lib/
     router/
       index.js
@@ -340,16 +336,15 @@ sources/express-framework/
   package.json
 ```
 
-The index file (`<source-id>.md`) contains:
+The index file (`{slug}-snapshot.md`) contains:
 
 ```markdown
 ---
-source-id: "express-framework"
+slug: "express-framework"
 title: "Express.js Framework"
 type: repository
 url: "https://github.com/expressjs/express"
 fetched: 2026-03-09T16:30:00Z
-hash: "p6q7r8..."
 highlights:
   - "lib/application.js"
   - "lib/router/index.js"
@@ -365,7 +360,7 @@ Key rules:
 - Mirror directory tree faithfully
 - For large repos, set `selective: true` and only ingest key files
 - Populate `highlights` with the most important files
-- The index `.md` file provides the frontmatter and a structural overview
+- The index file provides the frontmatter and a structural overview
 
 ## Documentation sites
 
@@ -373,7 +368,7 @@ Mirror the section hierarchy under the source directory. Preserve navigation str
 
 ```
 sources/react-docs/
-  react-docs.md                 # Summary/index file with frontmatter
+  react-docs-snapshot.md           # Index file with frontmatter
   getting-started/
     installation.md
     tutorial.md
@@ -383,16 +378,15 @@ sources/react-docs/
       useEffect.md
 ```
 
-The index file (`<source-id>.md`) contains:
+The index file (`{slug}-snapshot.md`) contains:
 
 ```markdown
 ---
-source-id: "react-docs"
+slug: "react-docs"
 title: "React Documentation"
 type: documentation-site
 url: "https://react.dev/learn"
 fetched: 2026-03-09T17:00:00Z
-hash: "s9t0u1..."
 highlights:
   - "api-reference/hooks/useState.md"
   - "getting-started/tutorial.md"
@@ -418,12 +412,11 @@ CLI captures use markdown with code fences. Help output stays in original format
 
 ```markdown
 ---
-source-id: "git-manpage"
+slug: "git-manpage"
 title: "git manpage"
 type: cli-manpage
 tool-name: "git"
 fetched: 2026-04-07T16:00:00Z
-hash: "a1b2c3..."
 ---
 
 # git manpage
@@ -437,12 +430,11 @@ hash: "a1b2c3..."
 
 ```markdown
 ---
-source-id: "git-help-output"
+slug: "git-help-output"
 title: "git --help output"
 type: cli-help
 tool-name: "git"
 fetched: 2026-04-07T16:00:00Z
-hash: "d4e5f6..."
 ---
 
 # git --help output
@@ -456,14 +448,13 @@ hash: "d4e5f6..."
 
 ```markdown
 ---
-source-id: "git-remote-help"
+slug: "git-remote-help"
 title: "git remote --help"
 type: cli-subcommand-help
 tool-name: "git"
 command: "remote"
 depth: 1
 fetched: 2026-04-07T16:00:00Z
-hash: "g7h8i9..."
 ---
 
 # git remote --help
@@ -475,7 +466,7 @@ hash: "g7h8i9..."
 
 Key rules:
 - Keep exact formatting inside code fences.
-- Use tool name in source-id (like `git-manpage`, `git-help-output`).
+- Use tool name in slug (like `git-manpage`, `git-help-output`).
 - Add command path for subcommands (like `git-remote-help`).
 - Set `depth: 1` for first-level subcommands, `depth: 2` for nested.
 - Set `failed: true` in frontmatter if capture fails.

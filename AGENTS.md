@@ -53,3 +53,21 @@ Run the test suite from `skills/swain-search/`:
 cd skills/swain-search
 uv run --with pytest --with markdownify --with playwright --with beautifulsoup4 pytest
 ```
+
+## Test command (integration)
+
+```bash
+cd skills/swain-search
+uv run --with pytest --with markdownify --with beautifulsoup4 pytest tests/test_compliance.py -v
+```
+
+## Test command (staging)
+
+```bash
+cd skills/swain-search
+uv run --with pytest --with markdownify --with beautifulsoup4 pytest tests/test_e2e.py -v
+```
+
+## Test coverage matrix
+
+Master coverage matrix: `docs/test-coverage-matrix.yaml`

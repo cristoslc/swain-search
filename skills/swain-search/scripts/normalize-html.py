@@ -80,7 +80,6 @@ def build_frontmatter(
     title: str,
     url: str,
     fetched: str,
-    raw_hash: str,
     raw_path: Path,
     final_url: str | None,
     screenshot: str | None,
@@ -88,12 +87,11 @@ def build_frontmatter(
     rendered_at: str | None,
 ) -> dict[str, object]:
     frontmatter: dict[str, object] = {
-        "source-id": source_id,
+        "slug": source_id,
         "title": title,
         "type": "web",
         "url": url,
         "fetched": fetched,
-        "hash": raw_hash,
     }
 
     if capture_engine:
@@ -147,9 +145,26 @@ def dump_frontmatter(frontmatter: dict[str, object]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def extract_main_content(html: str) -> str:
+    """Extract the main content area from HTML, stripping navigation, sidebars, footers.
+
+    Tries, in order: <main>, <article>, [role=main], #content, .content, <body>.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    for selector in ["main", "article", '[role="main"]', "#content", ".content", ".post-content", ".article-content"]:
+        element = soup.select_one(selector)
+        if element:
+            return str(element)
+    body = soup.find("body")
+    if body:
+        return str(body)
+    return html
+
+
 def normalize(html: str) -> str:
     """Convert HTML to markdown while keeping the content as verbatim as possible."""
-    return md(html, heading_style="ATX", bullets="-", strip=["script", "style"]).strip()
+    main_html = extract_main_content(html)
+    return md(main_html, heading_style="ATX", bullets="-", strip=["script", "style"]).strip()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -178,7 +193,6 @@ def main(argv: list[str] | None = None) -> int:
         title=title,
         url=args.url,
         fetched=fetched,
-        raw_hash=raw_hash,
         raw_path=raw_path,
         final_url=args.final_url,
         screenshot=args.screenshot,
@@ -192,10 +206,9 @@ def main(argv: list[str] | None = None) -> int:
     out_path.write_text(dump_frontmatter(frontmatter) + "\n" + body + "\n", encoding="utf-8")
 
     print(json.dumps({
-        "source-id": source_id,
+        "slug": source_id,
         "normalized-path": str(out_path),
         "title": title,
-        "hash": raw_hash,
     }))
     return 0
 
