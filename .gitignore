@@ -70,3 +70,11 @@ Desktop.ini
 
 # Eval artifacts (generated output)
 evals/artifacts/
+
+# Node (accidental npm init)
+node_modules/
+package-lock.json
+package.json
+
+# Prompts
+prompts/
